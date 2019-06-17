@@ -28,6 +28,7 @@ class GlobalConfig():
 
 
     def make_config(self, command):
+        print command
         config = default_for(command)
         config.global_config = self
         return config
@@ -68,19 +69,20 @@ class GlobalConfig():
             current_page = []
 
             for widget in page:
-
+                
                 if "sensor" not in widget:
                     print "widget definition missing 'sensor' attribute"
                     break
 
                 sensor = widget.pop("sensor").upper()
+                sensor = sensor.encode('ascii','ignore')
 
                 if sensor not in obd.commands:
                     print "unknown sensor name '%s'" % widget["sensor"]
                     break
 
                 if widget["type"] not in widgets:
-                    print "unknown sensor name '%s'" % widget["type"]
+                    print "unknown widget type '%s'" % widget["type"]
                     break
 
                 config = self.make_config(obd.commands[sensor])

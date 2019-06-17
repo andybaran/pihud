@@ -63,6 +63,6 @@ class Text(QWidget):
             painter.drawText(r, Qt.AlignVCenter, self.config["title"])
 
         r = QRect(0, h, self.width(), self.t_height)
-        painter.drawText(r, Qt.AlignVCenter, str(int(round(self.value))))
+        painter.drawText(r, Qt.AlignCenter, str(int(round(self.value))))
 
         painter.end()
