@@ -33,6 +33,27 @@ Now, in order to allow X sessions for all users, run the following command, and 
 ```shell
 sudo dpkg-reconfigure x11-common
 ```
+Obsoleted. Use this instead:
+```
+sudo apt-get install xserver-xorg-legacy -y
+
+sudo vim /etc/X11/Xwrapper.config
+#Change console to anybody
+allowed_users=anybody
+
+sudo vim /etc/X11/xinit/xinitrc
+#your file will look something like this
+
+#!/bin/sh
+
+# /etc/X11/xinit/xinitrc
+#
+# global xinitrc file, used by all X sessions started by xinit (startx)
+
+# invoke global X session script
+~pi/.xinitrc
+#. /etc/X11/Xsession
+```
 
 Finally, create an .xinitrc file (if you don’t have one already), in your home directory
 
