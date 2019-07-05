@@ -1,6 +1,7 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import math
 
 
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
@@ -13,20 +14,35 @@ class DigitalGauge(QWidget):
         self.config = config
         self.value = config["min"]
 
-        self.font      = QFont()
-        self.note_font = QFont()
+        self.font_db   = QFontDatabase()
+        self.font_id   = self.font_db.addApplicationFont("fonts/DS-DIGI.TTF")
+        self.families = self.font_db.applicationFontFamilies(self.font_id)
+        #print [str(f) for f in self.families] #DS-Digital
+
+        self.font      = QFont("DS-Digital")
+        self.note_font = QFont("DS-Digital")
         self.color     = QColor(config["color"])
+        self.pen_color = QColor(Qt.black)
         self.red_color = QColor(config["redline_color"])
         self.brush     = QBrush(self.color)
-        self.pen       = QPen(self.color)
+        self.brush_bg  = QBrush(QColor("#222222"))
+        self.brush_red = QBrush(self.red_color)
+        self.pen       = QPen(self.pen_color)
         self.red_pen   = QPen(self.red_color)
+        self.text_pen  = QPen(self.color)
 
         self.font.setPixelSize(self.config["font_size"])
         self.note_font.setPixelSize(self.config["note_font_size"])
-        self.pen.setWidth(3)
-        self.red_pen.setWidth(3)
+        self.pen.setWidth(1)
+        self.red_pen.setWidth(1)
 
-        s = scale(config["min"], config["max"], config["scale_step"])
+        #self.gradient = QLinearGradient(0, 30, 100, 100)
+        #self.gradient.setColorAt(1, Qt.gray)
+        #self.gradient.setColorAt(0, Qt.black)
+        #self.brush    = QBrush(self.gradient)
+
+        #s = scale(config["min"], config["max"], config["scale_step"])
+        s = scale(config["min"], config["max"], (config["max"] - config["min"])/80)
 
         self.angles = map_scale(s, 0, 270)
         self.str_scale, self.multiplier = str_scale(s, config["scale_mult"])
@@ -51,7 +67,7 @@ class DigitalGauge(QWidget):
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
-        self.__tick_l   = (r/10)       # length of each tick, extending inwards
+        self.__tick_l   = (r/8)       # length of each tick, extending inwards
         self.__needle_l = (r/5) * 3    # length of the needle
 
         painter = QPainter()
@@ -63,10 +79,12 @@ class DigitalGauge(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
 
         self.draw_title(painter)
+        self.draw_value(painter)
         if self.config["numerals"]:
             self.draw_multiplier(painter)
             self.draw_numbers(painter)
         self.draw_marks(painter)
+        #self.draw_value(painter)
         #self.draw_needle(painter)
 
         painter.end()
@@ -78,26 +96,48 @@ class DigitalGauge(QWidget):
 
         painter.translate(self.width() / 2, self.height() / 2)
 
-
         # draw the ticks
 
-        end = self.__tick_r - self.__tick_l
+        end     = self.__tick_r - self.__tick_l
+        yTopOffset = int(2 * self.__tick_r * math.sin(math.radians(self.angles[1] / 2)) / 2) #- 1
+        yBottomOffset = int(2 * end * math.sin(math.radians(self.angles[1] / 2)) / 2) #- 1
+        #arcTopRect = QRectF()
+        #arcTopRect.setTopLeft(QPointF(self.__tick_r + 5, -yTopOffset))
+        #arcTopRect.setBottomRight(QPointF(self.__tick_r - 5, yTopOffset))
+
+        #arcBottomRect = QRectF()
+        #arcBottomRect.setTopLeft(QPointF(end + 5, -yBottomOffset))
+        #arcBottomRect.setBottomRight(QPointF(end - 5, yBottomOffset))
+        #painter.setBrush(self.brush_bg)
+
+        angle = map_value(self.value, self.config["min"], self.config["max"], 0, 270)
+        angle = min(angle, 270)
+        angle -= 90 + 45
 
         for a in self.angles:
             painter.save()
             painter.rotate(90 + 45 + a)
 
-            #if a > self.red_angle:
-            #    painter.setPen(self.red_pen)
+            if a > self.red_angle:
+                painter.setBrush(self.brush_red)
+            elif a <= angle:
+                painter.setBrush(self.brush)
+            else:
+                painter.setBrush(self.brush_bg)
 
             path = QPainterPath()
-            path.moveTo(self.__tick_r, 0)
-            path.lineTo(end, 0)
-            path.lineTo(end, self.__tick_l)
-            path.lineTo(self.__tick_r,self.__tick_l)
-            path.lineTo(self.__tick_r, 0)
+            path.moveTo(end, -yBottomOffset)
+            path.lineTo(self.__tick_r, -yTopOffset)
+            path.lineTo(self.__tick_r, yTopOffset)
+            #path.moveTo(self.__tick_r,-yTopOffset)
+            #path.arcTo(arcTopRect, 90, 180)
+            path.lineTo(end, yBottomOffset)
+            path.lineTo(end, -yBottomOffset)
+            #path.moveTo(end, -yBottomOffset)
+            #path.arcTo(arcBottomRect, 90, 180)
 
             #painter.drawLine(self.__tick_r, 0, end, 0)
+            #painter.drawRect(arcTopRect)
             painter.drawPath(path)
 
             painter.restore()
@@ -175,6 +215,7 @@ class DigitalGauge(QWidget):
 
     def draw_title(self, painter):
         painter.save()
+        painter.setPen(self.text_pen)
 
         r_height = self.config["font_size"] + 20
         r = QRect(0, self.height() - r_height, self.width(), r_height)
@@ -182,6 +223,16 @@ class DigitalGauge(QWidget):
 
         painter.restore()
 
+    def draw_value(self, painter):
+        painter.save()
+        painter.setPen(self.text_pen)
+
+        r_height = self.config["font_size"] + 20
+        r = QRect(0, self.height()/2 - r_height/2, self.width(), self.height()/2 + r_height/2)
+        #painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, str(self.value))
+        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, "TEST")
+
+        painter.restore()
 
     def draw_multiplier(self, painter):
         if self.multiplier > 1:
