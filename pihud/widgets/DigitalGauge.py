@@ -81,15 +81,12 @@ class DigitalGauge(QWidget):
         self.draw_value(painter)
         if self.config["numerals"]:
             self.draw_multiplier(painter)
-            #self.draw_numbers(painter)
         self.draw_marks(painter)
-        #self.draw_needle(painter)
 
         painter.end()
 
 
     def draw_marks(self, painter):
-
         painter.save()
 
         painter.translate(self.width() / 2, self.height() / 2)
@@ -111,8 +108,8 @@ class DigitalGauge(QWidget):
                 painter.setBrush(self.brush_red)
             elif a <= angle:
                 painter.setBrush(self.brush)
-	    elif  a > self.red_angle:
-		painter.setBrush(self.brush_red_bg)
+            elif  a > self.red_angle:
+                painter.setBrush(self.brush_red_bg)
             else:
                 painter.setBrush(self.brush_bg)
 
@@ -127,56 +124,6 @@ class DigitalGauge(QWidget):
 
             painter.restore()
         painter.restore()
-
-
-    def draw_numbers(self, painter):
-
-        for a, v in zip(self.angles, self.str_scale):
-            painter.save()
-
-            if a > self.red_angle:
-                painter.setPen(self.red_pen)
-
-            painter.translate(self.width() / 2, self.height() / 2)
-
-            painter.rotate(a)
-            painter.rotate(-45)
-            painter.translate(-self.__text_r, 0)
-            painter.rotate(45)
-            painter.rotate(-a)
-
-            r_width  = self.config["font_size"] * len(v)
-            r_height = self.config["font_size"]
-
-            r = QRect(-r_width / 2, -r_height / 2, r_width, r_height)
-            painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, v)
-
-            painter.restore()
-
-
-    def draw_needle(self, painter):
-        painter.save()
-
-        painter.translate(self.width() / 2, self.height() / 2)
-        angle = map_value(self.value, self.config["min"], self.config["max"], 0, 270)
-        angle = min(angle, 270)
-        angle -= 90 + 45
-        painter.rotate(angle)
-
-
-        painter.drawEllipse(QPoint(0,0), 5, 5)
-
-        painter.drawPolygon(
-            QPolygon([
-                QPoint(-5, 0),
-                QPoint(0,   -self.__needle_l),
-                QPoint(5,  0),
-                QPoint(-5, 0)
-            ])
-        )
-
-        painter.restore()
-
 
     def draw_title(self, painter):
         painter.save()
@@ -206,7 +153,7 @@ class DigitalGauge(QWidget):
         if self.multiplier > 1:
             painter.save()
 
-	    painter.setPen(self.text_pen)
+            painter.setPen(self.text_pen)
             painter.setFont(self.note_font)
             s = "x" + str(self.multiplier)
             r = QRect(0, self.width() / 6, self.width(), self.height())
