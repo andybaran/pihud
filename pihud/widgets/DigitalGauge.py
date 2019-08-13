@@ -130,7 +130,7 @@ class DigitalGauge(QWidget):
         painter.setPen(self.text_pen)
         painter.setFont(self.title_font)
 
-        r_height = self.config["font_size"] + 20
+        r_height = self.config["font_size"] + 40
         r = QRect(0, self.height() - r_height, self.width(), r_height)
         painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, self.config["title"])
 
