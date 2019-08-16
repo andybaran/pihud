@@ -26,7 +26,7 @@ class DigitalGauge(QWidget):
         self.pen_color    = QColor(Qt.black)
         self.red_color    = QColor(config["redline_color"])
         self.brush        = QBrush(self.color)
-        self.brush_bg     = QBrush(QColor("#222222"))
+        self.brush_bg     = QBrush(QColor("#555555"))
         self.brush_red    = QBrush(self.red_color)
         self.brush_red_bg = QBrush(QColor("#73311c"))
         self.pen          = QPen(self.pen_color)
@@ -34,13 +34,11 @@ class DigitalGauge(QWidget):
         self.text_pen     = QPen(self.color)
 
         #self.font.setPixelSize(self.config["font_size"])
-        self.font.setPixelSize(int(max(self.width(), self.height())/1.5))
-        self.note_font.setPixelSize(int(max(self.width(), self.height())/10))
-        self.title_font.setPixelSize(int(max(self.width(), self.height())/7))
         
         self.pen.setWidth(1)
         self.red_pen.setWidth(1)
-
+        
+        # TODO: make 80 configurable
         s = scale(config["min"], config["max"], float(config["max"] - config["min"])/80)
 
         self.angles = map_scale(s, 0, 270)
@@ -65,9 +63,13 @@ class DigitalGauge(QWidget):
 
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
-        self.__tick_r   = r - (r/4)    # outer radius of the tick marks
-        self.__tick_l   = (r/8)       # length of each tick, extending inwards
+        self.__tick_r   = r - (r/8)    # outer radius of the tick marks
+        self.__tick_l   = (r/6)       # length of each tick, extending inwards
         self.__needle_l = (r/5) * 3    # length of the needle
+
+        self.font.setPixelSize(int(max(self.width(), self.height())/3))
+        self.note_font.setPixelSize(int(max(self.width(), self.height())/30))
+        self.title_font.setPixelSize(int(max(self.width(), self.height())/12))
 
         painter = QPainter()
         painter.begin(self)
@@ -93,7 +95,7 @@ class DigitalGauge(QWidget):
 
         # draw the ticks
 
-        end     = self.__tick_r - self.__tick_l
+        end = self.__tick_r - self.__tick_l
         yTopOffset = int(2 * self.__tick_r * math.sin(math.radians(self.angles[1] / 2)) / 2) #- 1
         yBottomOffset = int(2 * end * math.sin(math.radians(self.angles[1] / 2)) / 2) #- 1
 
@@ -130,7 +132,9 @@ class DigitalGauge(QWidget):
         painter.setPen(self.text_pen)
         painter.setFont(self.title_font)
 
-        r_height = self.config["font_size"] + 40
+        font_offset = int(self.height()/8)
+
+        r_height = self.config["font_size"] + font_offset
         r = QRect(0, self.height() - r_height, self.width(), r_height)
         painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, self.config["title"])
 
