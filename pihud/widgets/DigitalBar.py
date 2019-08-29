@@ -5,9 +5,9 @@ from PyQt4.QtGui import *
 from pihud.util import map_value, in_range
 
 
-class Bar_Horizontal(QWidget):
+class Digital_Bar_Horizontal(QWidget):
     def __init__(self, parent, config):
-        super(Bar_Horizontal, self).__init__(parent)
+        super(Digital_Bar_Horizontal, self).__init__(parent)
 
         self.config = config
         self.value = config["min"]
@@ -172,9 +172,9 @@ class Bar_Horizontal(QWidget):
 
 
 
-class Bar_Vertical(Bar_Horizontal):
+class Digital_Bar_Vertical(Digital_Bar_Horizontal):
     def __init__(self, parent, config):
-        super(Bar_Vertical, self).__init__(parent, config)
+        super(Digital_Bar_Vertical, self).__init__(parent, config)
 
 
     def pre_compute(self, painter):

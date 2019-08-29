@@ -22,8 +22,6 @@ class DigitalText(QWidget):
         self.red_color    = QColor(config["redline_color"])
         self.pen          = QPen(self.color)
 
-        self.font.setPixelSize(self.config["font_size"])
-
         self.red_value = config["redline"]
         if self.red_value is None:
             self.red_value = config["max"]
@@ -41,25 +39,22 @@ class DigitalText(QWidget):
         painter = QPainter()
         painter.begin(self)
 
-        font_size = int(max(self.width(), self.height())/3)
-        title_font_size = int(font_size/3)
-        self.t_height = self.height() - title_font_size - 8
+        self.font_size = int(max(self.width(), self.height())/2)
+        self.title_font_size = int(self.font_size/3)
+        self.t_height = self.height() - self.title_font_size*2
 
         painter.setFont(self.font)
         painter.setPen(self.pen)
         #painter.setRenderHint(QPainter.Antialiasing)
 
         if len(self.config["title"]) > 0:
-            r = QRect(0, self.t_height, self.width(), self.height())
-            #print(0, self.t_height, self.width(), self.height())
-            #self.font.setPixelSize(title_font_size)
-            painter.drawRect(r)
-            #painter.drawText(r, Qt.AlignCenter, self.config["title"])
+            #self.font.setPixelSize(self.title_font_size)
+            self.font.setPixelSize(50)
+            r = QRect(0, self.t_height + 1, self.width() - 1, self.height() - self.t_height - 10)
+            painter.drawText(r, Qt.AlignCenter, self.config["title"])
 
-        self.font.setPixelSize(font_size)
-        r = QRect(0, 0, self.width(),  self.t_height)
-        #painter.drawRect(r)
-        #print(0, 0, self.width(),  self.t_height)
-        #painter.drawText(r, Qt.AlignCenter, str(int(round(self.value))))
+        self.font.setPixelSize(self.font_size)
+        r = QRect(0, 0, self.width(), self.t_height)
+        painter.drawText(r, Qt.AlignCenter, str(int(round(self.value))))
 
         painter.end()
