@@ -61,7 +61,7 @@ class DigitalText(QWidget):
         painter.setPen(self.pen)
         self.font.setPixelSize(self.font_size)
         r = QRect(0, 0, self.width(), self.t_height*2)
-        painter.drawText(r, Qt.AlignRight|Qt.AlignBottom, str(self.value))
+        painter.drawText(r, Qt.AlignRight|Qt.AlignBottom, "{:10.2f}".format(self.value))
         #painter.drawRect(r)
 
         painter.restore()
