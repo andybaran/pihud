@@ -3,11 +3,11 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from pihud.util import map_value, in_range
+import time
 
-
-class DigitalText(QWidget):
+class RaceLogic(QWidget):
     def __init__(self, parent, config):
-        super(DigitalText, self).__init__(parent)
+        super(RaceLogic, self).__init__(parent)
 
         self.config = config
         self.value = config["min"]
@@ -23,6 +23,10 @@ class DigitalText(QWidget):
         self.red_color    = QColor(config["redline_color"])
         self.pen          = QPen(self.color)
         self.red_pen      = QPen(self.red_color)
+
+        self.start        = 0.0
+        self.stop         = 0.0
+        self.onetohundred = 0.0
 
         self.red_value = config["redline"]
         if self.red_value is None:
@@ -43,12 +47,20 @@ class DigitalText(QWidget):
 
         #painter.setRenderHint(QPainter.Antialiasing)
 
-        self.font_size = int(self.height()/2)
-        self.title_font_size = int(self.height()/6)
+        self.font_size = int(max(self.width()/2, self.height()/2))
+        self.title_font_size = int(max(self.width()/8, self.height())/8)
         self.t_height = int(self.height()/3)  # - self.title_font_size * 2
 
         if len(self.config["title"]) > 0:
             self.draw_title(painter)
+
+        if self.value == 0:
+            self.start = time.time()
+
+        if self.value >= self.red_value and self.start > 0:
+            self.stop = time.time()
+            self.onetohundred = self.stop - self.start
+            self.start = 0
 
         self.draw_value(painter)
 
@@ -57,28 +69,15 @@ class DigitalText(QWidget):
     def draw_value(self, painter):
         painter.save()
 
-        if self.value >= self.red_value:
+        if self.onetohundred > 0:
             painter.setPen(self.red_pen)
         else:
             painter.setPen(self.pen)
+
         painter.setFont(self.font)
         self.font.setPixelSize(self.font_size)
         r = QRect(0, 0, self.width(), self.t_height*2)
-        if self.config["numerals"]:
-            if self.config["align"] == "right":
-                painter.drawText(r, Qt.AlignRight|Qt.AlignBottom, "{:.2f}".format(self.value))
-            elif self.config["align"] == "left":
-                painter.drawText(r, Qt.AlignLeft|Qt.AlignBottom, "{:.2f}".format(self.value))
-            else:
-                painter.drawText(r, Qt.AlignCenter|Qt.AlignBottom, "{:.2f}".format(self.value))
-        else:
-            if self.config["align"] == "right":
-                painter.drawText(r, Qt.AlignRight|Qt.AlignBottom, "{:.0f}".format(self.value))
-            elif self.config["align"] == "left":
-                painter.drawText(r, Qt.AlignLeft|Qt.AlignBottom, "{:.0f}".format(self.value))
-            else:
-                painter.drawText(r, Qt.AlignCenter|Qt.AlignBottom, "{:.0f}".format(self.value))
-        #painter.drawText(r, Qt.AlignRight|Qt.AlignTop, str(self.font_size))
+        painter.drawText(r, Qt.AlignCenter|Qt.AlignBottom, "{:.1f}".format(self.onetohundred))
         #painter.drawRect(r)
 
         painter.restore()
@@ -90,13 +89,7 @@ class DigitalText(QWidget):
         painter.setPen(self.pen)
         self.title_font.setPixelSize(self.title_font_size)
         r = QRect(0, self.t_height*2, self.width(), self.t_height)
-        if self.config["align"] == "right":
-            painter.drawText(r, Qt.AlignRight|Qt.AlignTop, self.config["title"])
-        elif self.config["align"] == "left":
-            painter.drawText(r, Qt.AlignLeft|Qt.AlignTop, self.config["title"])
-        else:
-            painter.drawText(r, Qt.AlignCenter|Qt.AlignTop, self.config["title"])
-        #painter.drawText(r, Qt.AlignRight|Qt.AlignTop, str(self.title_font_size))
+        painter.drawText(r, Qt.AlignCenter|Qt.AlignTop, self.config["title"])
         #painter.drawRect(r)
 
         painter.restore()

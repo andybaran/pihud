@@ -21,7 +21,6 @@ class GlobalConfig():
             ("redline_color",  "#FF3643"),
             ("font_size",      30       ),
             ("note_font_size", 20       ),
-
             ("pages",          [[]]     ),
         ])
         self.load()

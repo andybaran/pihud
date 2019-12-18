@@ -74,7 +74,7 @@ class DigitalBarHorizontal(QWidget):
 
         self.draw_title(painter)
         #self.draw_border(painter)
-        #self.draw_bars(painter)
+        self.draw_bars(painter)
 
         painter.end()
 
@@ -114,8 +114,8 @@ class DigitalBarHorizontal(QWidget):
         painter.save()
 
         r = QRect(0, 0, self.width(), self.t_height)
-        #painter.drawText(r, Qt.AlignVCenter, self.config["title"])
-        painter.drawText(r, Qt.AlignVCenter, "Test")
+        painter.drawText(r, Qt.AlignVCenter, self.config["title"])
+        #painter.drawText(r, Qt.AlignVCenter, "Test")
         painter.drawRect(r)
 
         painter.restore()
