@@ -5,13 +5,13 @@ from setuptools import setup, find_packages
 
 setup(
     name="pihud",
-    version="0.1.0",
+    version="0.1.1",
     description=("Configurable heads up display for the Raspberry Pi using a car's OBD port"),
     classifiers=[
         "Operating System :: POSIX :: Linux",
         "License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)",
         "Topic :: System :: Monitoring",
-        "Programming Language :: Python :: 2 :: Only",
+        "Programming Language :: Python :: 3 :: Only",
         "Development Status :: 3 - Alpha",
         "Topic :: System :: Logging",
         "Intended Audience :: Developers",

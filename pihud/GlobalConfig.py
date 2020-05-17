@@ -53,7 +53,7 @@ class GlobalConfig():
                     file_config = json.loads(raw_config_json)
                 except Exception as e:
                     print("Invalid json in config:")
-                    print str(e)
+                    print(str(e))
                     self.filename = "" # prevents save()ing
                     return
 
