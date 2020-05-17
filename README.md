@@ -64,7 +64,7 @@ touch ~/.xinitrc
 Open it in a text editor of your choice, and add the following line:
 
 ```shell
-python -m piHud
+python -m pihud
 ```
 
 Your done! You can now reboot the Pi with:
