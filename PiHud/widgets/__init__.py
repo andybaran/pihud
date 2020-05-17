@@ -1,12 +1,10 @@
-
+""" 
 import os
 import inspect
 from PyQt5 import QtWidgets
 
-
 # the final dict for storing classes by classname
 widgets = {}
-
 
 # find python files in this directory
 for f in os.listdir(os.path.dirname(__file__)):
@@ -18,8 +16,13 @@ for f in os.listdir(os.path.dirname(__file__)):
     if name == '__init__':
         continue
 
+    print("Name = " + name)
+    print("Ext = " + ext)
+    
     # import the module
     module = __import__(name, locals(), globals())
+
+    print("module = " + module)
 
     # search each modules dict for classes that implement QWidget
     for key in module.__dict__:
@@ -29,4 +32,4 @@ for f in os.listdir(os.path.dirname(__file__)):
             continue
 
         if issubclass(e, QtWidgets.QWidget):
-            widgets[key] = e
+            widgets[key] = e """

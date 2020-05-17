@@ -1,12 +1,10 @@
-
 import os
 import json
 from collections import OrderedDict
 
 import obd
-from widgets import widgets
-from defaults import default_for
-
+from PiHud import widgets
+from PiHud.defaults import default_for
 
 class GlobalConfig():
     """ manages the structure of the config file """
@@ -76,13 +74,13 @@ class GlobalConfig():
                 sensor = widget.pop("sensor").upper()
                 sensor = sensor.encode('ascii','ignore')
 
-                if sensor not in obd.commands:
+                """if sensor not in obd.commands:
                     print("unknown sensor name '%s'" % widget["sensor"])
                     break
 
                 if widget["type"] not in widgets:
                     print("unknown widget type '%s'" % widget["type"])
-                    break
+                    break"""
 
                 config = self.make_config(obd.commands[sensor])
 

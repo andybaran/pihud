@@ -5,7 +5,7 @@ import obd
 import shutil
 from PiHud import PiHud
 from PyQt5 import QtWidgets
-from GlobalConfig import GlobalConfig
+from PiHud import GlobalConfig
 
 try:
     import RPi.GPIO as GPIO
@@ -34,7 +34,7 @@ def main():
         else:
             shutil.copyfile(default_config_path, config_path)
 
-    global_config = GlobalConfig(config_path)
+    global_config = GlobalConfig.GlobalConfig(config_path)
 
     # =========================== OBD-II Connection ===========================
 
