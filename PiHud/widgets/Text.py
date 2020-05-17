@@ -1,6 +1,6 @@
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 
 from pihud.util import map_value, in_range
 

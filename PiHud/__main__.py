@@ -4,7 +4,7 @@ import sys
 import obd
 import shutil
 from PiHud import PiHud
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 from GlobalConfig import GlobalConfig
 
 try:

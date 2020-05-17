@@ -1,8 +1,12 @@
 
-from Page import Page
-from Widget import Widget
-from PageMarker import PageMarker
-from PyQt4 import QtGui, QtCore
+# from Page 
+from PiHud import Page
+
+# from Widget 
+from PiHud import Widget
+# from PageMarker 
+from PiHud import PageMarker
+from PyQt5 import QtGui, QtCore
 
 
 

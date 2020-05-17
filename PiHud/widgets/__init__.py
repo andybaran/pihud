@@ -1,7 +1,7 @@
 
 import os
 import inspect
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 
 
 # the final dict for storing classes by classname
