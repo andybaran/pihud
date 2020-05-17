@@ -28,6 +28,7 @@ class Config():
             ("h",           None        ),
             ("min",         _min        ),
             ("max",         _max        ),
+            ("align",       "right"     ),
             ("redline",     _redline    ),
             ("numerals",    True        ),
             ("scale_step",  _scale_step ),

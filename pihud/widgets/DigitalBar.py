@@ -1,13 +1,14 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import math
 
-from pihud.util import map_value, in_range
+from pihud.util import map_value, in_range, scale, map_scale, map_value, scale_offsets, str_scale
 
 
-class Digital_Bar_Horizontal(QWidget):
+class DigitalBarHorizontal(QWidget):
     def __init__(self, parent, config):
-        super(Digital_Bar_Horizontal, self).__init__(parent)
+        super(DigitalBarHorizontal, self).__init__(parent)
 
         self.config = config
         self.value = config["min"]
@@ -26,6 +27,25 @@ class Digital_Bar_Horizontal(QWidget):
         self.red_pen   = QPen(self.red_color)
         self.no_pen    = QPen(self.no_color)
 
+        self.font_db  = QFontDatabase()
+        self.font_id  = self.font_db.addApplicationFont("fonts/DS-DIGI.TTF")
+        self.families = self.font_db.applicationFontFamilies(self.font_id)
+        #print [str(f) for f in self.families] #DS-Digital
+
+        self.font         = QFont("DS-Digital")
+        self.note_font    = QFont("DS-Digital")
+        self.title_font   = QFont("DS-Digital")
+        self.color        = QColor(config["color"])
+        self.pen_color    = QColor(Qt.black)
+        self.red_color    = QColor(config["redline_color"])
+        self.brush        = QBrush(self.color)
+        self.brush_bg     = QBrush(QColor("#555555"))
+        self.brush_red    = QBrush(self.red_color)
+        self.brush_red_bg = QBrush(QColor("#73311c"))
+        self.pen          = QPen(self.pen_color)
+        self.red_pen      = QPen(self.red_color)
+        self.text_pen     = QPen(self.color)
+
         self.font.setPixelSize(self.config["font_size"])
         self.note_font.setPixelSize(self.config["note_font_size"])
         self.pen.setWidth(3)
@@ -43,20 +63,18 @@ class Digital_Bar_Horizontal(QWidget):
 
 
     def paintEvent(self, e):
-
-
         painter = QPainter()
         painter.begin(self)
 
         self.pre_compute(painter)
 
         painter.setFont(self.font)
-        painter.setPen(self.pen)
+        painter.setPen(self.text_pen)
         painter.setRenderHint(QPainter.Antialiasing)
 
         self.draw_title(painter)
-        self.draw_border(painter)
-        self.draw_bar(painter)
+        #self.draw_border(painter)
+        self.draw_bars(painter)
 
         painter.end()
 
@@ -64,6 +82,14 @@ class Digital_Bar_Horizontal(QWidget):
     def pre_compute(self, painter):
         w = self.width()
         h = self.height()
+
+        s = scale(self.config["min"], self.config["max"], float(self.config["max"] - self.config["min"])/(self.config["w"]/4))
+
+        self.angles = map_scale(s, 0, self.config["w"])
+        self.str_scale, self.multiplier = str_scale(s, self.config["scale_mult"])
+        self.red_angle = self.config["w"]
+        if self.config["redline"] is not None:
+            self.red_angle  = map_value(self.config["redline"], self.config["min"], self.config["max"], 0, self.config["w"])
 
         # recompute new values
         self.l = 2            # left X value
@@ -89,6 +115,8 @@ class Digital_Bar_Horizontal(QWidget):
 
         r = QRect(0, 0, self.width(), self.t_height)
         painter.drawText(r, Qt.AlignVCenter, self.config["title"])
+        #painter.drawText(r, Qt.AlignVCenter, "Test")
+        painter.drawRect(r)
 
         painter.restore()
 
@@ -127,6 +155,45 @@ class Digital_Bar_Horizontal(QWidget):
 
         painter.restore()
 
+    def draw_bars(self, painter):
+        painter.save()
+        painter.translate(0, self.t_height)
+        painter.setPen(self.no_pen)
+        painter.setBrush(self.brush)
+
+        self.t_height = self.config["font_size"] + 8
+        self.bar_height = max(0, self.height() - self.t_height) - self.l
+        #end = self.__tick_r - self.__tick_l
+        #yTopOffset = int(2 * self.__tick_r * math.sin(math.radians(self.angles[1] / 2)) / 2) #- 1
+        #yBottomOffset = int(2 * end * math.sin(math.radians(self.angles[1] / 2)) / 2) #- 1
+
+        angle = map_value(self.value, self.config["min"], self.config["max"], 0, self.config["w"])
+        angle = min(angle, self.config["w"])
+
+        for a in self.angles:
+            painter.save()
+            #painter.rotate(90 + 45 + a)
+
+            if a > self.red_angle and a <= angle:
+                painter.setBrush(self.brush_red)
+            elif a <= angle:
+                painter.setBrush(self.brush)
+            elif  a > self.red_angle:
+                painter.setBrush(self.brush_red_bg)
+            else:
+                painter.setBrush(self.brush_bg)
+
+            path = QPainterPath()
+            path.moveTo(0, 0 + a)
+            path.lineTo(self.bar_height, 0 + a)
+            path.lineTo(self.bar_height, 2 + a)
+            path.lineTo(0, 2 + a)
+            path.lineTo(0, 0 + a)
+
+            painter.drawPath(path)
+            painter.restore()
+
+        painter.restore()
 
     def draw_bar(self, painter):
         painter.save()
@@ -172,9 +239,9 @@ class Digital_Bar_Horizontal(QWidget):
 
 
 
-class Digital_Bar_Vertical(Digital_Bar_Horizontal):
+class DigitalBarVertical(DigitalBarHorizontal):
     def __init__(self, parent, config):
-        super(Digital_Bar_Vertical, self).__init__(parent, config)
+        super(DigitalBarVertical, self).__init__(parent, config)
 
 
     def pre_compute(self, painter):
