@@ -4,7 +4,7 @@ import sys
 import obd
 import shutil
 from PiHud import PiHud
-from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 from GlobalConfig import GlobalConfig
 
 try:
@@ -49,7 +49,7 @@ def main():
 
     # ============================ QT Application =============================
 
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     pihud = PiHud(global_config, connection)
 
     # ============================== GPIO Setup ===============================

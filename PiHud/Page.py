@@ -1,8 +1,8 @@
 
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 
-class Page(QtGui.QWidget):
+class Page(QtWidgets.QWidget):
     """ A container and dropevent catcher for widgets """
 
     def __init__(self, parent, pihud):

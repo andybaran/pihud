@@ -1,8 +1,8 @@
 
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 
-class Graph(QtGui.QWidget):
+class Graph(QtWidgets.QWidget):
     def __init__(self, parent, config):
         super(Graph, self).__init__(parent)
 

@@ -6,11 +6,11 @@ from PiHud import Page
 from PiHud import Widget
 # from PageMarker 
 from PiHud import PageMarker
-from PyQt5 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 
 
-class PiHud(QtGui.QMainWindow):
+class PiHud(QtWidgets.QMainWindow):
     def __init__(self, global_config, connection):
         super(PiHud, self).__init__()
         self.global_config = global_config
@@ -25,7 +25,7 @@ class PiHud(QtGui.QMainWindow):
         # ================== Init Pages ===================
 
         self.pageMarker = PageMarker(self)
-        self.stack      = QtGui.QStackedWidget(self)
+        self.stack      = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stack)
 
         # read the config and make pages
@@ -34,7 +34,7 @@ class PiHud(QtGui.QMainWindow):
 
         # ================= Context Menu ==================
 
-        self.menu = QtGui.QMenu()
+        self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
 
         if len(self.connection.supported_commands) > 0:

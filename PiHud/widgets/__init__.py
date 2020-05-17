@@ -1,7 +1,7 @@
 
 import os
 import inspect
-from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 
 
 # the final dict for storing classes by classname
@@ -28,5 +28,5 @@ for f in os.listdir(os.path.dirname(__file__)):
         if not inspect.isclass(e):
             continue
 
-        if issubclass(e, QtGui.QWidget):
+        if issubclass(e, QtWidgets.QWidget):
             widgets[key] = e
