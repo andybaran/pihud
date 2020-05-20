@@ -1,6 +1,6 @@
 
 import obd
-from PiHud import widgets
+from pihud import widgets
 from PyQt5 import QtCore, QtWidgets
 
 

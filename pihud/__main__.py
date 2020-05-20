@@ -3,9 +3,9 @@ import os
 import sys
 import obd
 import shutil
-from PiHud import PiHud
+from pihud.PiHud import PiHud
 from PyQt5 import QtWidgets
-from PiHud import GlobalConfig
+from pihud import GlobalConfig
 
 try:
     import RPi.GPIO as GPIO
@@ -25,7 +25,9 @@ def main():
     """ entry point """
 
     # ============================ Config loading =============================
-
+    if os.path.isfile(config_path):
+        print("[pihud] using config: ", config_path)
+        
     if not os.path.isfile(config_path):
         # copy the default config
         if not os.path.isfile(default_config_path):
@@ -35,13 +37,16 @@ def main():
             shutil.copyfile(default_config_path, config_path)
 
     global_config = GlobalConfig.GlobalConfig(config_path)
+    
 
     # =========================== OBD-II Connection ===========================
 
     if global_config["debug"]:
         obd.logger.setLevel(obd.logging.DEBUG) # enables all debug information
 
+    print('[pihud] port: ', global_config["port"])
     connection = obd.Async(global_config["port"])
+    
 
     # if global_config["debug"]:
     #     for i in range(32):
@@ -49,8 +54,9 @@ def main():
 
     # ============================ QT Application =============================
 
+    print("sys.argv : ", sys.argv)
     app = QtWidgets.QApplication(sys.argv)
-    pihud = PiHud(global_config, connection)
+    hud = PiHud(global_config, connection)
 
     # ============================== GPIO Setup ===============================
 
@@ -62,7 +68,7 @@ def main():
                    pull_up_down=GPIO.PUD_UP)
         GIO.add_event_detect(pin,
                              GPIO.FALLING,
-                             callback=pihud.next_page,
+                             callback=hud.next_page,
                              bouncetime=200)
     except:
         pass

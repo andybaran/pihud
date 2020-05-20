@@ -1,11 +1,11 @@
 
 # from Page 
-from PiHud import Page
+from pihud.Page import Page
 
 # from Widget 
-from PiHud import Widget
+from pihud.Widget import Widget
 # from PageMarker 
-from PiHud import PageMarker
+from pihud.PageMarker import PageMarker
 from PyQt5 import QtWidgets, QtCore
 
 

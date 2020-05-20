@@ -3,8 +3,8 @@ import json
 from collections import OrderedDict
 
 import obd
-from PiHud import widgets
-from PiHud.defaults import default_for
+from pihud import widgets
+from pihud.defaults import default_for
 
 class GlobalConfig():
     """ manages the structure of the config file """

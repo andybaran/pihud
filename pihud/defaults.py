@@ -1,4 +1,4 @@
-from PiHud import Config
+from pihud import Config
 from obd import commands as c
 
 #                         class_name  min  max  redline  scale_step  scale_mult  buffer_size
