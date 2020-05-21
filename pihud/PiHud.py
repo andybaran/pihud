@@ -1,4 +1,3 @@
-
 # from Page 
 from pihud.Page import Page
 
@@ -30,6 +29,8 @@ class PiHud(QtWidgets.QMainWindow):
 
         # read the config and make pages
         for configs in global_config["pages"]:
+            for x in configs:
+                print("[pihud]: ", x.type())
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
@@ -124,9 +125,10 @@ class PiHud(QtWidgets.QMainWindow):
 
     def __add_existing_widget(self, page, config):
         # make a widget from the given config
-        widget = Widget(page, config)
+        thiswidget = Widget(page, config)
+        print("[pihud] thiswidget = ", thiswidget)
         # add it to the page
-        page.widgets.append(widget)
+        page.widgets.append(thiswidget)
 
 
     def __add_widget(self, command):

@@ -54,7 +54,6 @@ def main():
 
     # ============================ QT Application =============================
 
-    print("sys.argv : ", sys.argv)
     app = QtWidgets.QApplication(sys.argv)
     hud = PiHud(global_config, connection)
 
