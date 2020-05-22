@@ -76,6 +76,10 @@ class GlobalConfig():
                 sensor = sensor.encode('ascii','ignore')
                 sensor = sensor.decode()
 
+                thisgaugetype = widget.pop("type").upper()
+                thisgaugetype = sensor.encode('ascii','ignore')
+                thisgaugetype = sensor.decode()
+
                 #if I use sensor here I get unknwon sensor name 'b'RPM'
                 #if I user widget["sensor"] I get ...???
                 if sensor not in obd.commands:
@@ -83,8 +87,8 @@ class GlobalConfig():
                     
                     break
 
-                if widget["type"] not in widgets:
-                    print("unknown widget type '%s'" % widget["type"])
+                if thisgaugetype not in widgets:
+                    print("unknown widget type '%s'" % thisgaugetype)
                     break
 
                 config = self.make_config(obd.commands[sensor])
