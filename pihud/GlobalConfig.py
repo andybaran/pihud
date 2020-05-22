@@ -78,7 +78,7 @@ class GlobalConfig():
 
                 thisgaugetype = widget.pop("type").upper()
                 thisgaugetype = sensor.encode('ascii','ignore')
-                thisgaugetype = sensor.decode()
+                #thisgaugetype = sensor.decode()
 
                 #if I use sensor here I get unknwon sensor name 'b'RPM'
                 #if I user widget["sensor"] I get ...???
