@@ -29,8 +29,8 @@ class PiHud(QtWidgets.QMainWindow):
 
         # read the config and make pages
         for configs in global_config["pages"]:
-            for x in configs:
-                print("[pihud]: ", x.type())
+            #for x in configs:
+                #print("[pihud]: ", x.type())
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
