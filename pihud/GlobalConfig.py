@@ -74,7 +74,7 @@ class GlobalConfig():
 
                 sensor = widget.pop("sensor").upper()
                 sensor = sensor.encode('ascii','ignore')
-                #sensor = sensor.decode()
+                sensor = sensor.decode()
 
                 #if I use sensor here I get unknwon sensor name 'b'RPM'
                 #if I user widget["sensor"] I get ...???
