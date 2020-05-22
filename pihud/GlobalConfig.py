@@ -76,8 +76,11 @@ class GlobalConfig():
                 sensor = sensor.encode('ascii','ignore')
                 #sensor = sensor.decode()
 
+                #if I use sensor here I get unknwon sensor name 'b'RPM'
+                #if I user widget["sensor"] I get ...???
                 if sensor not in obd.commands:
                     print("unknown sensor name '%s'" % sensor)
+                    
                     break
 
                 if widget["type"] not in widgets:
