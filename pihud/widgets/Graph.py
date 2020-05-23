@@ -1,5 +1,6 @@
 
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter
 
 
 class Graph(QtWidgets.QWidget):
