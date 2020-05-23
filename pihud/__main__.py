@@ -45,7 +45,7 @@ def main():
         obd.logger.setLevel(obd.logging.DEBUG) # enables all debug information
 
     print('[pihud] port: ', global_config["port"])
-    connection = obd.Async(global_config["port"])
+    connection = obd.Async(global_config["port"],baudrate=115200,fast=False)
     
 
     # if global_config["debug"]:

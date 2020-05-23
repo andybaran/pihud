@@ -2,7 +2,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import math
-from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter 
+from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter,QFontDatabase,QPainterPath 
 
 from pihud.util import map_value, in_range, scale, map_scale, map_value, scale_offsets, str_scale
 
