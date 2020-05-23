@@ -1,7 +1,7 @@
 import obd
-from pihud import widgets, PiHud
+from pihud import PiHud
+from pihud.widgets import displaywidgets
 from PyQt5 import QtCore, QtWidgets
-
 
 class Widget(QtWidgets.QWidget):
 
@@ -20,14 +20,14 @@ class Widget(QtWidgets.QWidget):
         self.menu.addAction(self.config["sensor"]).setDisabled(True)
 
         subMenu = self.menu.addMenu("Widget Type")
-        for w in widgets:
+        for w in displaywidgets:
             a = subMenu.addAction(w)
-            a.setData(widgets[w])
+            a.setData(displaywidgets[w])
 
         self.menu.addAction("Delete Widget", self.delete)
     
         # instantiate the requested graphics object
-        self.graphics = PiHud[config["type"]](self, config)
+        self.graphics = displaywidgets[config["type"]](self, config)
 
         self.move(self.position())
         self.show()

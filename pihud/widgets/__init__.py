@@ -4,7 +4,9 @@ import importlib
 from PyQt5 import QtWidgets
 
 # the final dict for storing classes by classname
-widgets = {}
+
+displaywidgets = {}
+
 
 # find python files in this directory
 for f in os.listdir(os.path.dirname(__file__)):
@@ -16,15 +18,13 @@ for f in os.listdir(os.path.dirname(__file__)):
     if name == '__init__':
         continue
 
-    print("Name = " + name)
-    print("Ext = " + ext)
+    #print("Name = " + name)
+    #print("Ext = " + ext)
     
     # import the module (old school)
     # module = __import__(name, locals(), globals())
 
-    module = importlib.import_module(name=(name))
-
-    print("module = " + module)
+    module = importlib.import_module(name=('.' + name),package='pihud.widgets')
 
     # search each modules dict for classes that implement QWidget
     for key in module.__dict__:
@@ -34,4 +34,4 @@ for f in os.listdir(os.path.dirname(__file__)):
             continue
 
         if issubclass(e, QtWidgets.QWidget):
-            widgets[key] = e
+            displaywidgets[key] = e
