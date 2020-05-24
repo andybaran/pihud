@@ -3,6 +3,7 @@ from pihud.Page import Page
 
 # from Widget 
 from pihud.Widget import Widget
+
 # from PageMarker 
 from pihud.PageMarker import PageMarker
 from PyQt5 import QtWidgets, QtCore
@@ -23,14 +24,12 @@ class PiHud(QtWidgets.QMainWindow):
 
         # ================== Init Pages ===================
 
-        self.pageMarker = PageMarker(self)
+        #self.pageMarker = PageMarker(self)
         self.stack      = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stack)
 
         # read the config and make pages
         for configs in global_config["pages"]:
-            #for x in configs:
-                #print("[pihud]: ", x.type())
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
@@ -56,7 +55,7 @@ class PiHud(QtWidgets.QMainWindow):
         self.menu.addAction("Save Layout", self.__save)
 
         # ===================== Start =====================
-
+        
         self.timer = QtCore.QBasicTimer()
         self.setWindowTitle("PiHud")
         self.showFullScreen()
@@ -126,7 +125,7 @@ class PiHud(QtWidgets.QMainWindow):
     def __add_existing_widget(self, page, config):
         # make a widget from the given config
         thiswidget = Widget(page, config)
-        print("[pihud] thiswidget = ", thiswidget)
+
         # add it to the page
         page.widgets.append(thiswidget)
 
@@ -197,7 +196,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         # switch page
         self.stack.setCurrentIndex(p)
-        self.pageMarker.set(self.__count(), self.__index())
+        #self.pageMarker.set(self.__count(), self.__index())
 
         self.start()
 

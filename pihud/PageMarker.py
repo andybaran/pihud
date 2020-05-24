@@ -1,10 +1,6 @@
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 
-#// https://www.riverbankcomputing.com/static/Docs/PyQt5/api/qtwidgets/qtwidgets-module.html?highlight=qtwidg
-#// https://www.riverbankcomputing.com/static/Docs/PyQt5/api/qtwidgets/qtwidgets-module.html
-# http://julien.duponchelle.info/python/migration-from-pyqt4-to-pyqt5/
-
 class PageMarker(QtWidgets.QWidget):
     def __init__(self, parent):
         super(PageMarker, self).__init__(parent)
@@ -30,7 +26,7 @@ class PageMarker(QtWidgets.QWidget):
     def paintEvent(self, e):
         painter = QtGui.QPainter()
         painter.begin(self)
-        # painter.setRenderHint(QtWidgets.QPainter.Antialiasing)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
         painter.fillRect(self.marker, self.fg_color)
         painter.end()
 

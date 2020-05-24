@@ -1,6 +1,6 @@
 {
     "debug": false, 
-    "port": "/dev/pts/1", 
+    "port": "/dev/pts/3", 
     "page_adv_pin": 18, 
     "color": "#53B9E8", 
     "redline_color": "#FF3643", 

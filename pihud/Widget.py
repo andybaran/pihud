@@ -15,7 +15,7 @@ class Widget(QtWidgets.QWidget):
         # palette.setColor(self.backgroundRole(), QtWidgets.QColor(255, 255, 255, 50))
         # self.setPalette(palette)
 
-        # make the context menu
+        # !!! no need for a menu at the moment
         self.menu = QtWidgets.QMenu()
         self.menu.addAction(self.config["sensor"]).setDisabled(True)
 
