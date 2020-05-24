@@ -56,7 +56,7 @@ def main():
     #         connection.supported_commands.append(obd.commands[1][i])
 
     # ============================ QT Application =============================
-
+    
     app = QtWidgets.QApplication(sys.argv)
     hud = PiHud(global_config, connection)
 
