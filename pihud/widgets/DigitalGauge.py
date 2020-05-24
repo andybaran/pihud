@@ -1,12 +1,8 @@
-
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-import math
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter,QFontDatabase,QPainterPath 
-
-
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
-
+import math
 
 class DigitalGauge(QWidget):
     def __init__(self, parent, config):
@@ -29,7 +25,7 @@ class DigitalGauge(QWidget):
         self.brush        = QBrush(self.color)
         self.brush_bg     = QBrush(QColor("#555555"))
         self.brush_red    = QBrush(self.red_color)
-        self.brush_red_bg = QBrush(QColor("#73311c"))
+        self.brush_red_bg = QBrush(self.red_Color)#QColor("#73311c"))
         self.pen          = QPen(self.pen_color)
         self.red_pen      = QPen(self.red_color)
         self.text_pen     = QPen(self.color)

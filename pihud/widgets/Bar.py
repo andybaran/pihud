@@ -1,10 +1,8 @@
-
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPainterPath 
 
 from pihud.util import map_value, in_range
-
 
 class Bar_Horizontal(QWidget):
     def __init__(self, parent, config):

@@ -43,7 +43,7 @@
             },
             {
                 "sensor": "CATALYST_TEMP_B1S1", 
-                "type": "Bar_Vertical", 
+                "type": "Text", 
                 "title": "Catalist tC bank1", 
                 "x": 200, 
                 "y": 5, 

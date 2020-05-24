@@ -1,10 +1,8 @@
-
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QRect, Qt, QPoint
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPolygon
 
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
-
 
 class Gauge(QWidget):
     def __init__(self, parent, config):

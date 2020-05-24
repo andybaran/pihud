@@ -33,7 +33,9 @@ class PiHud(QtWidgets.QMainWindow):
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
-
+        
+        ''' TODO: Implement this so a touch on the display can cycle use menu somehow
+        
         self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
 
@@ -52,7 +54,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         self.menu.addSeparator()
 
-        self.menu.addAction("Save Layout", self.__save)
+        self.menu.addAction("Save Layout", self.__save)'''
 
         # ===================== Start =====================
         
