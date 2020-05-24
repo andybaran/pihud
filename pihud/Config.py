@@ -21,7 +21,7 @@ class Config():
             ("sensor",      ""          ),
             ("type",        _class_name ),
             ("title",       ""          ),
-            ("color",       "#94F700"   ),
+            ("color",       "#2e3fcc"   ),
             ("x",           0           ),
             ("y",           0           ),
             ("w",           None        ), # default sizes are set by each widget's sizeHint()

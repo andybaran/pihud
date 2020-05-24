@@ -18,12 +18,19 @@ class PiHud(QtWidgets.QMainWindow):
 
         # ================= Color Palette =================
 
-        image = QtGui.QImage()
-        image.load('/etc/pihud/background.jpg')
-        #image = image.scaled(self.width(),self.height())
+        ### TODO : Add background image to pihud.rc config...and make it a conf file
+        # image = QtGui.QImage()
+        # image.load('/etc/pihud/background.jpg')
+        # image = image.scaled(self.width(),self.height())
+        # palette = QtGui.QPalette()
+        # palette.setBrush(self.backgroundRole(), QtGui.QBrush(image))
 
-        palette = QtGui.QPalette()
-        palette.setBrush(self.backgroundRole(), QtGui.QBrush(image))
+        palette = self.palette()
+        palette.setColor(self.backgroundRole(), QtCore.Qt.black)
+        self.setPalette(palette)
+
+
+
         self.setPalette(palette)
 
         # ================== Init Pages ===================
@@ -38,7 +45,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         # ================= Context Menu ==================
         
-        ''' TODO: Implement this so a touch on the display can cycle use menu somehow
+    
         
         self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
@@ -58,7 +65,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         self.menu.addSeparator()
 
-        self.menu.addAction("Save Layout", self.__save)'''
+        self.menu.addAction("Save Layout", self.__save)
 
         # ===================== Start =====================
         

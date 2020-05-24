@@ -2,7 +2,7 @@
     "debug": false, 
     "port": "/dev/pts/3", 
     "page_adv_pin": 18, 
-    "color": "#53B9E8", 
+    "color": "##2e3fcc", 
     "redline_color": "#FF3643", 
     "font_size": 18, 
     "note_font_size": 15, 
