@@ -18,6 +18,7 @@ except:
 running_dir         = os.path.dirname(os.path.realpath(__file__))
 default_config_path = os.path.join(running_dir, 'default.rc')
 config_path         = os.path.join(os.path.expanduser('~'), 'pihud.rc')
+config_path         ='/etc/pihud/pihud.rc'
 
 
 
@@ -25,6 +26,8 @@ def main():
     """ entry point """
 
     # ============================ Config loading =============================
+    
+    print('[pihud] : ', config_path, " ", os.path.isfile(config_path))
     if os.path.isfile(config_path):
         print("[pihud] using config: ", config_path)
         

@@ -25,12 +25,12 @@ class DigitalGauge(QWidget):
         self.brush        = QBrush(self.color)
         self.brush_bg     = QBrush(QColor("#555555"))
         self.brush_red    = QBrush(self.red_color)
-        self.brush_red_bg = QBrush(self.red_Color)#QColor("#73311c"))
+        self.brush_red_bg = QBrush(self.red_color)
         self.pen          = QPen(self.pen_color)
         self.red_pen      = QPen(self.red_color)
         self.text_pen     = QPen(self.color)
 
-        #self.font.setPixelSize(self.config["font_size"])
+        self.font.setPixelSize(self.config["font_size"])
         
         self.pen.setWidth(1)
         self.red_pen.setWidth(1)

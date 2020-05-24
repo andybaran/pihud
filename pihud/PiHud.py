@@ -6,7 +6,7 @@ from pihud.Widget import Widget
 
 # from PageMarker 
 from pihud.PageMarker import PageMarker
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 
 
@@ -18,8 +18,12 @@ class PiHud(QtWidgets.QMainWindow):
 
         # ================= Color Palette =================
 
-        palette = self.palette()
-        palette.setColor(self.backgroundRole(), QtCore.Qt.black)
+        image = QtGui.QImage()
+        image.load('/etc/pihud/background.jpg')
+        #image = image.scaled(self.width(),self.height())
+
+        palette = QtGui.QPalette()
+        palette.setBrush(self.backgroundRole(), QtGui.QBrush(image))
         self.setPalette(palette)
 
         # ================== Init Pages ===================
