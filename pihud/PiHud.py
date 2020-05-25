@@ -32,7 +32,7 @@ class PiHud(QtWidgets.QMainWindow):
         # ================= Context Menu ==================
         ''' TODO: this looks like it's building out a menu for each supported OBD command
         cool but unnecesary for MVP'''
-        '''self.menu = QtWidgets.QMenu()
+        self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
 
         if len(self.connection.supported_commands) > 0:
@@ -50,7 +50,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         self.menu.addSeparator()
 
-        self.menu.addAction("Save Layout", self.__save)'''
+        self.menu.addAction("Save Layout", self.__save)
 
         # ===================== Start =====================
         
@@ -104,6 +104,7 @@ class PiHud(QtWidgets.QMainWindow):
                 data = bme280.sample(bus, address, calibration_params)
                 r = round((data.pressure * 0.0145037738),1)
                 bus.close()
+
             widget.render(r)
 
 
@@ -113,7 +114,7 @@ class PiHud(QtWidgets.QMainWindow):
             if widget.config['type'] != 'Boost':
                 self.connection.watch(widget.get_command())
                 self.connection.start()
-        self.timer.start(1000/10, self) #this defines the refresh value in milliseconds default working was 1000/30 or roughly 3 times/second
+        self.timer.start(1000/30, self) #this defines the refresh value in milliseconds default working was 1000/30 or roughly 3 times/second
 
 
     def stop(self):

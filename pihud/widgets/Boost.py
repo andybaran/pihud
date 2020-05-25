@@ -9,8 +9,7 @@ class Boost(QWidget):
         super(Boost, self).__init__(parent)
 
         self.config = config
-        print('config = ', config)
-        config.update({'min' : -14, 
+        config.update({'min' : -30, 
             'max' : 20, 
             'color' : '#2e3fcc', 
             'redline_color' : '#ff0000', 

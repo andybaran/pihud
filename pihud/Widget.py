@@ -9,7 +9,7 @@ class Widget(QtWidgets.QWidget):
         super(Widget, self).__init__(parent)
         self.config = config
 
-        '''TODO : no need for a menu... at the moment
+        '''TODO : no need for a menu... at the moment'''
         self.menu = QtWidgets.QMenu()
         self.menu.addAction(self.config["sensor"]).setDisabled(True)
 
@@ -18,7 +18,7 @@ class Widget(QtWidgets.QWidget):
             a = subMenu.addAction(w)
             a.setData(displaywidgets[w])
 
-        self.menu.addAction("Delete Widget", self.delete)'''
+        self.menu.addAction("Delete Widget", self.delete)
     
         # instantiate the requested graphics object
         self.graphics = displaywidgets[config["type"]](self, config)
