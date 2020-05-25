@@ -10,6 +10,9 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 class PiHud(QtWidgets.QMainWindow):
     def __init__(self, global_config, connection):
         super(PiHud, self).__init__()
+
+        self.nonOBD = ['AnalogBoost','DigitalBoost']
+
         self.global_config = global_config
         self.connection = connection
 
@@ -93,7 +96,7 @@ class PiHud(QtWidgets.QMainWindow):
         page = self.__page()
 
         for widget in page.widgets:
-            if widget.config['type'] != 'Boost':
+            if widget.config['type'] not in self.nonOBD:
                 r = self.connection.query(widget.get_command())
 
             else:
@@ -111,7 +114,7 @@ class PiHud(QtWidgets.QMainWindow):
     def start(self):
         # watch the commands on this page
         for widget in self.__page().widgets:
-            if widget.config['type'] != 'Boost':
+            if widget.config['type'] not in self.nonOBD:
                 self.connection.watch(widget.get_command())
                 self.connection.start()
         self.timer.start(1000/30, self) #this defines the refresh value in milliseconds default working was 1000/30 or roughly 3 times/second
