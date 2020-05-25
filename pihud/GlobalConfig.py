@@ -65,8 +65,6 @@ class GlobalConfig():
             current_page = []
 
             for widget in page:
-                print('[pihud] widget sensor :', widget.get('sensor'))
-                
                 if "sensor" not in widget:
                     print("widget definition missing 'sensor' attribute")
                     break
@@ -75,20 +73,6 @@ class GlobalConfig():
                 sensor = originalSensor.upper()
                 sensor = sensor.encode('ascii','ignore')
                 sensor = sensor.decode()
-
-                #thisgaugetype = widget.pop("type").upper()
-                #thisgaugetype = sensor.encode('ascii','ignore')
-                #thisgaugetype = sensor.decode()
-
-                #if I use sensor here I get unknwon sensor name 'b'RPM'
-                #if I user widget["sensor"] I get ...???
-                #if sensor not in obd.commands and originalSensor != 'Boost':
-                #    print("unknown sensor name '%s'" % sensor)
-                #    break
-
-                #if thisgaugetype not in widgets:
-                 #   print("unknown widget type '%s'" % thisgaugetype)
-                  #  break
 
                 if originalSensor != 'Boost':
                     config = self.make_config(obd.commands[sensor])

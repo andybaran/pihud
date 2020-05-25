@@ -95,7 +95,6 @@ class PiHud(QtWidgets.QMainWindow):
         for widget in page.widgets:
             if widget.config['type'] != 'Boost':
                 r = self.connection.query(widget.get_command())
-                print('Not Boost:' ,widget.config['type'], " ", widget.config['sensor'], " ", r)
 
             else:
                 port = 1
@@ -104,7 +103,7 @@ class PiHud(QtWidgets.QMainWindow):
                 calibration_params = bme280.load_calibration_params(bus, address)
                 data = bme280.sample(bus, address, calibration_params)
                 r = round((data.pressure * 0.0145037738),1)
-                print('Boost >>>>>>> ',widget.config['type'], " ", widget.config['sensor'], " ", r)
+                bus.close()
             widget.render(r)
 
 
