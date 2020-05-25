@@ -18,12 +18,6 @@ for f in os.listdir(os.path.dirname(__file__)):
     if name == '__init__':
         continue
 
-    #print("Name = " + name)
-    #print("Ext = " + ext)
-    
-    # import the module (old school)
-    # module = __import__(name, locals(), globals())
-
     module = importlib.import_module(name=('.' + name),package='pihud.widgets')
 
     # search each modules dict for classes that implement QWidget

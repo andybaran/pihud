@@ -1,3 +1,5 @@
+import smbus2
+import bme280
 from pihud.Page import Page
 from pihud.Widget import Widget
 from pihud.PageMarker import PageMarker
@@ -13,21 +15,13 @@ class PiHud(QtWidgets.QMainWindow):
 
         # ================= Color Palette =================
 
-        ### TODO : Add background image to pihud.rc config...and make it a conf file
-        # image = QtGui.QImage()
-        # image.load('/etc/pihud/background.jpg')
-        # image = image.scaled(self.width(),self.height())
-        # palette = QtGui.QPalette()
-        # palette.setBrush(self.backgroundRole(), QtGui.QBrush(image))
-        # self.setPalette(palette)
-
         palette = self.palette()
         palette.setColor(self.backgroundRole(), QtCore.Qt.black)
         self.setPalette(palette)
 
         # ================== Init Pages ===================
 
-        #self.pageMarker = PageMarker(self)
+        self.pageMarker = PageMarker(self)
         self.stack      = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stack)
 
@@ -36,10 +30,9 @@ class PiHud(QtWidgets.QMainWindow):
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
-        
-    
-        
-        self.menu = QtWidgets.QMenu()
+        ''' TODO: this looks like it's building out a menu for each supported OBD command
+        cool but unnecesary for MVP'''
+        '''self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
 
         if len(self.connection.supported_commands) > 0:
@@ -57,7 +50,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         self.menu.addSeparator()
 
-        self.menu.addAction("Save Layout", self.__save)
+        self.menu.addAction("Save Layout", self.__save)'''
 
         # ===================== Start =====================
         
@@ -100,21 +93,32 @@ class PiHud(QtWidgets.QMainWindow):
         page = self.__page()
 
         for widget in page.widgets:
-            r = self.connection.query(widget.get_command())
+            if widget.config['type'] != 'Boost':
+                r = self.connection.query(widget.get_command())
+                print('Not Boost:' ,widget.config['type'], " ", widget.config['sensor'], " ", r)
+
+            else:
+                port = 1
+                address = 0x77
+                bus = smbus2.SMBus(port)
+                calibration_params = bme280.load_calibration_params(bus, address)
+                data = bme280.sample(bus, address, calibration_params)
+                r = round((data.pressure * 0.0145037738),1)
+                print('Boost >>>>>>> ',widget.config['type'], " ", widget.config['sensor'], " ", r)
             widget.render(r)
 
 
     def start(self):
         # watch the commands on this page
         for widget in self.__page().widgets:
-            self.connection.watch(widget.get_command())
-
-        self.connection.start()
-        self.timer.start(1000/30, self)
+            if widget.config['type'] != 'Boost':
+                self.connection.watch(widget.get_command())
+                self.connection.start()
+        self.timer.start(1000/10, self) #this defines the refresh value in milliseconds default working was 1000/30 or roughly 3 times/second
 
 
     def stop(self):
-        self.timer.stop();
+        self.timer.stop()
         self.connection.stop()
         self.connection.unwatch_all()
 
@@ -161,7 +165,10 @@ class PiHud(QtWidgets.QMainWindow):
 
 
     def __add_existing_page(self, configs=None):
-        """ adds a page and fills with the given widgets """
+        """ adds a page and fills with the given widgets 
+        since we could have an input method to select the viewable widgets on given page.
+        think about a seperate page for OBD2 and Spotify where PageMarker keeps track of the individual pages
+        and each individual page keeps track of its stack of widgets """
         page = Page(self.stack, self)
 
         if configs is not None:
@@ -169,7 +176,7 @@ class PiHud(QtWidgets.QMainWindow):
                 self.__add_existing_widget(page, config)
 
         self.stack.addWidget(page)
-
+        
 
     def __add_page(self):
         """ adds a new (empty) page to the end of the page stack """

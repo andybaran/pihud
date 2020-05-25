@@ -1,0 +1,30 @@
+{
+    "debug": false, 
+    "port": "/dev/pts/2", 
+    "page_adv_pin": 18, 
+    "color": "#2e3fcc", 
+    "redline_color": "#ff0000", 
+    "font_size": 18, 
+    "note_font_size": 15, 
+    "demo": false,
+    "pages": [
+        [
+            {
+                "sensor": "Boost",
+                "type": "Boost",
+                "title": "Boost",
+                "x": 0,
+                "y": 5,
+                "w": 200,
+                "h": 200,
+                "min": 0,
+                "max": 20,
+                "redline": 13,
+                "numerals": true,
+                "scale_step": 1, 
+                "scale_mult": 1,
+                "buffer_size": 60
+            }
+        ]
+    ]
+}

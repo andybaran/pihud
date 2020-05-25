@@ -15,8 +15,8 @@ class GlobalConfig():
             ("debug",          False    ),
             ("port",           None     ),
             ("page_adv_pin",   18       ),
-            ("color",          "#2e3fcc"),#"#94F700"),
-            ("redline_color",  "#ff0000"),#DE00A6"),
+            ("color",          "#2e3fcc"),
+            ("redline_color",  "#ff0000"),
             ("font_size",      30       ),
             ("note_font_size", 20       ),
             ("pages",          [[]]     ),
@@ -25,7 +25,6 @@ class GlobalConfig():
 
 
     def make_config(self, command):
-        print(command)
         config = default_for(command)
         config.global_config = self
         return config
@@ -72,7 +71,8 @@ class GlobalConfig():
                     print("widget definition missing 'sensor' attribute")
                     break
 
-                sensor = widget.pop("sensor").upper()
+                originalSensor = widget.get("sensor")
+                sensor = originalSensor.upper()
                 sensor = sensor.encode('ascii','ignore')
                 sensor = sensor.decode()
 
@@ -82,26 +82,24 @@ class GlobalConfig():
 
                 #if I use sensor here I get unknwon sensor name 'b'RPM'
                 #if I user widget["sensor"] I get ...???
-                if sensor not in obd.commands:
-                    print("unknown sensor name '%s'" % sensor)
-                    
-                    break
+                #if sensor not in obd.commands and originalSensor != 'Boost':
+                #    print("unknown sensor name '%s'" % sensor)
+                #    break
 
                 #if thisgaugetype not in widgets:
                  #   print("unknown widget type '%s'" % thisgaugetype)
                   #  break
 
-                config = self.make_config(obd.commands[sensor])
-
-                # load the keys/data into the global config
+                if originalSensor != 'Boost':
+                    config = self.make_config(obd.commands[sensor])
+                    # load the keys/data into the global config
+                else:
+                    config = {'type': 'Boost'}
                 self.__load_keys(widget, config)
-
                 current_page.append(config)
-
             pages.append(current_page)
 
         self.data['pages'] = pages
-
 
 
     def save(self, pages_configs):
