@@ -1,5 +1,13 @@
+#SparkFun QWIIC BME280 Pressure Sensor
 import smbus2
 import bme280
+
+#Adafruit ported MPRLS Pressure Sensor
+import time
+import board
+import busio
+import adafruit_mprls
+
 from pihud.Page import Page
 from pihud.Widget import Widget
 from pihud.PageMarker import PageMarker
@@ -91,7 +99,6 @@ class PiHud(QtWidgets.QMainWindow):
 
     # ========= Main loop =========
 
-
     def timerEvent(self, event):
         page = self.__page()
 
@@ -100,12 +107,21 @@ class PiHud(QtWidgets.QMainWindow):
                 r = self.connection.query(widget.get_command())
 
             else:
+
+                #TODO: Figure out how to do all this with one library
+                # Get BME280 Sensor Value
                 port = 1
-                address = 0x77
                 bus = smbus2.SMBus(port)
-                calibration_params = bme280.load_calibration_params(bus, address)
-                data = bme280.sample(bus, address, calibration_params)
-                r = round((data.pressure * 0.0145037738),1)
+                bmeaddress = 0x77
+                bme_calibration_params = bme280.load_calibration_params(bus, bmeaddress)
+                bmedata = bme280.sample(bus, bmeaddress, bme_calibration_params)
+                
+                # Get MPRLS Sesnor Value
+                mprlsi2c = busio.I2C(board.SCL, board.SDA)
+                mprlsdata = adafruit_mprls.MPRLS(mprlsi2c, psi_min=0, psi_max=25)
+
+                # Calucate boost or vacuum and close connection to I2C bus
+                r = round(((mprlsdata.pressure - bmedata.pressure) * 0.0145037738),2)
                 bus.close()
 
             widget.render(r)

@@ -11,13 +11,13 @@
         [
             {
                 "sensor": "Boost",
-                "type": "Boost",
+                "type": "AnalogBoost",
                 "title": "Boost",
                 "x": 0,
                 "y": 5,
                 "w": 200,
                 "h": 200,
-                "min": 0,
+                "min": -30,
                 "max": 20,
                 "redline": 13,
                 "numerals": true,
@@ -25,6 +25,7 @@
                 "scale_mult": 1,
                 "buffer_size": 60
             }
+
         ]
     ]
 }

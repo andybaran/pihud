@@ -13,18 +13,19 @@ class DigitalBoost(QWidget):
             'max' : 20, 
             'color' : '#2e3fcc', 
             'redline_color' : '#ff0000', 
-            'scale_multi': 10, 
+            'scale_multi': 1, 
             'scale_step': 10, 
             'redline' : 14, 
             'font_size' : 18, 
-            'title' : 'Digital Boost',
+            'title' : 'Highest Trip Boost',
             'x': 0,
             'y': 5,
             'w': 200,
             'h': 200,
-            'numerals': 'true',
+            'numerals': 'false',
             'sensor': 'Boost'})
         self.value = config["min"]
+        self.highest = config['min']
 
         self.font_db  = QFontDatabase()
         self.font_id  = self.font_db.addApplicationFont("fonts/DS-DIGI.TTF")
@@ -75,11 +76,11 @@ class DigitalBoost(QWidget):
 
     def paintEvent(self, e):
 
-        r = min(self.width(), self.height()) / 2
-        self.__text_r   = r - (r/10)   # radius of the text
-        self.__tick_r   = r - (r/8)    # outer radius of the tick marks
-        self.__tick_l   = (r/6)       # length of each tick, extending inwards
-        self.__needle_l = (r/5) * 3    # length of the needle
+        #r = min(self.width(), self.height()) / 2
+        #self.__text_r   = r - (r/10)   # radius of the text
+        #self.__tick_r   = r - (r/8)    # outer radius of the tick marks
+        #self.__tick_l   = (r/6)       # length of each tick, extending inwards
+        #self.__needle_l = (r/5) * 3    # length of the needle
 
         self.font.setPixelSize(int(max(self.width(), self.height())/3))
         self.note_font.setPixelSize(int(max(self.width(), self.height())/30))
@@ -95,16 +96,16 @@ class DigitalBoost(QWidget):
 
         self.draw_title(painter)
         self.draw_value(painter)
-        if self.config["numerals"]:
-            self.draw_multiplier(painter)
-        self.draw_marks(painter)
+        #if self.config["numerals"]:
+        #    self.draw_multiplier(painter)
+        #self.draw_marks(painter)
 
         painter.end()
 
     def draw_marks(self, painter):
         painter.save()
 
-        painter.translate(self.width() / 2, self.height() / 2)
+        '''painter.translate(self.width() / 2, self.height() / 2)
 
         # draw the ticks
 
@@ -137,7 +138,7 @@ class DigitalBoost(QWidget):
 
             painter.drawPath(path)
 
-            painter.restore()
+            painter.restore()'''
         painter.restore()
 
     def draw_title(self, painter):
@@ -161,7 +162,11 @@ class DigitalBoost(QWidget):
         r_height = self.height()/2 + 20
         #r = QRect(0, self.height()/2 - r_height/2, self.width(), self.height()/2 + r_height/2)
         r = QRect(0, 0, self.width(), self.height())
-        painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, str(int(self.value//self.multiplier)))
+        
+        #### here for highest trip
+        if self.value > self.highest:
+            painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, f'{self.value//self.multiplier}')#str(int(self.value//self.multiplier)))
+            self.highest = self.value
         #painter.drawText(r, Qt.AlignHCenter | Qt.AlignVCenter, "TEST")
 
         painter.restore()
