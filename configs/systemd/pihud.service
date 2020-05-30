@@ -1,0 +1,14 @@
+[Unit]
+Description=PiHud Service
+
+[Service]
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+ExecStart=/usr/bin/python3 -m pihud
+#Restart=always
+#RestartSec=10s
+KillMode=process
+#TimeoutSec=infinity
+
+[Install]
+WantedBy=graphical.target
