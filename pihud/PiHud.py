@@ -130,7 +130,7 @@ class PiHud(QtWidgets.QMainWindow):
         for widget in self.__page().widgets:
             if widget.config['type'] not in self.nonOBD:
                 self.connection.watch(widget.get_command())
-                self.connection.start()
+                #self.connection.start()
         self.timer.start(1000/30, self) #this defines the refresh value in milliseconds default working was 1000/30 or roughly 3 times/second
 
 
@@ -253,6 +253,8 @@ class PiHud(QtWidgets.QMainWindow):
         elif key == QtCore.Qt.Key_Tab:
             self.next_page()
 
+    
+    # Handle touch events
     def eventFilter(self, obj, event):
         if event.type() == QEvent.TouchBegin:
             #print(event.type(), " " , "I was touched")

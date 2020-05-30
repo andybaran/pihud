@@ -33,13 +33,17 @@ def main():
         obd.logger.setLevel(obd.logging.DEBUG) # enables all debug information
 
     print('[pihud] OBD2 Port: ', global_config["port"])
-    connection = obd.Async(global_config["port"],baudrate=115200,fast=False)
+    connection = obd.Async(global_config["port"],baudrate=115200)
 
     # ============================ QT Application =============================
     
     app = QtWidgets.QApplication(sys.argv)
     hud = PiHud(global_config, connection)
+    
+    # Hide the cursor for the application that "contains" the hud
+    # TODO: figure out how to do this 
 
+    # Enable Touch for the hud
     hud.setAttribute(Qt.WA_AcceptTouchEvents,True)
     hud.installEventFilter(hud)
 
