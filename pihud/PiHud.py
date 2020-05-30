@@ -254,12 +254,12 @@ class PiHud(QtWidgets.QMainWindow):
             self.next_page()
 
     def eventFilter(self, obj, event):
-        if type(event) == QEvent.TouchBegin():
-            print(type(event), " " , "I was touched")
+        if event.type() == QEvent.TouchBegin:
+            #print(event.type(), " " , "I was touched")
             self.next_page()
             return True
-        elif type(event) == QEvent.TouchEnd():
-            print(type(event), " " ,"That was nice....")
+        elif event.type() == QEvent.TouchEnd:
+            #print(event.type(), " " ,"That was nice....")
             return True    
         return super(PiHud, self).eventFilter(obj,event)
 
