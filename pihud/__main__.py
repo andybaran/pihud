@@ -7,6 +7,9 @@ from pihud.PiHud import PiHud
 from PyQt5 import QtWidgets
 from pihud import GlobalConfig
 
+#Touch
+from PyQt5.QtCore import Qt, QEvent
+
 config_path         ='/etc/pihud/pihud.rc'
 
 def main():
@@ -36,6 +39,9 @@ def main():
     
     app = QtWidgets.QApplication(sys.argv)
     hud = PiHud(global_config, connection)
+
+    hud.setAttribute(Qt.WA_AcceptTouchEvents,True)
+    hud.installEventFilter(hud)
 
     # ================================= Start =================================
 
