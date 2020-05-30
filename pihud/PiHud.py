@@ -13,7 +13,9 @@ from pihud.Widget import Widget
 from pihud.PageMarker import PageMarker
 from PyQt5 import QtWidgets, QtCore, QtGui
 
-
+#Touch events
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import Qt
 
 class PiHud(QtWidgets.QMainWindow):
     def __init__(self, global_config, connection):
@@ -71,18 +73,14 @@ class PiHud(QtWidgets.QMainWindow):
 
         self.start()
 
-
     def __page(self):
         return self.stack.currentWidget()
-
 
     def __index(self):
         return self.stack.currentIndex()
 
-
     def __count(self):
         return self.stack.count()
-
 
     def __save(self):
         pages = []
@@ -96,7 +94,6 @@ class PiHud(QtWidgets.QMainWindow):
 
         self.global_config.save(pages)
 
-
     # ========= Main loop =========
 
     def timerEvent(self, event):
@@ -104,6 +101,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         for widget in page.widgets:
             if widget.config['type'] not in self.nonOBD:
+
                 r = self.connection.query(widget.get_command())
 
             else:
@@ -146,9 +144,7 @@ class PiHud(QtWidgets.QMainWindow):
         self.stop()
         self.start()
 
-
     # ========= Widget Actions =========
-
 
     def __add_existing_widget(self, page, config):
         # make a widget from the given config
@@ -156,7 +152,6 @@ class PiHud(QtWidgets.QMainWindow):
 
         # add it to the page
         page.widgets.append(thiswidget)
-
 
     def __add_widget(self, command):
         # make a default config for this command
@@ -203,7 +198,6 @@ class PiHud(QtWidgets.QMainWindow):
         self.goto_page(self.__count() - 1)
 
 
-
     def __delete_page(self):
         if self.__count() > 1:
 
@@ -217,7 +211,6 @@ class PiHud(QtWidgets.QMainWindow):
             self.stack.removeWidget(page)
             page.deleteLater()
             self.goto_page(self.__index()) # calls start()
-
 
 
     def goto_page(self, p):
@@ -259,6 +252,17 @@ class PiHud(QtWidgets.QMainWindow):
 
         elif key == QtCore.Qt.Key_Tab:
             self.next_page()
+
+    def eventFilter(self, obj, event):
+        if type(event) == QEvent.TouchBegin():
+            print(type(event), " " , "I was touched")
+            self.next_page()
+            return True
+        elif type(event) == QEvent.TouchEnd():
+            print(type(event), " " ,"That was nice....")
+            return True    
+        return super(PiHud, self).eventFilter(obj,event)
+
 
 
     def closeEvent(self, e):
