@@ -56,6 +56,7 @@ for command in defaults:
 def default_for(command):
     ''' handle the special boost gauge type '''   
     if command == 'Boost':
+        print
         config = {'min' : -14, 
             'max' : 20, 
             'color' : '#2e3fcc', 
@@ -78,9 +79,10 @@ def default_for(command):
         config = defaults[command].clone()
     else:
         config = fallback_default.clone()
-    if hasattr(command,'name'):
-        config["sensor"] = command.name
-    if hasattr(command,'desc'):
-        config["title"] = command.desc
+    
+    #if hasattr(command,'name'):
+    config["sensor"] = command.name
+    #if hasattr(command,'desc'):
+    config["title"] = command.desc
 
     return config
