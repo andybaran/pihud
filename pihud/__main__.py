@@ -33,7 +33,7 @@ def main():
         obd.logger.setLevel(obd.logging.DEBUG) # enables all debug information
 
     print('[pihud] OBD2 Port: ', global_config["port"])
-    connection = obd.Async(global_config["port"],baudrate=115200)
+    connection = obd.Async(global_config["port"],baudrate=115200,fast=False)
 
     # ============================ QT Application =============================
     
