@@ -97,10 +97,11 @@ class PiHud(QtWidgets.QMainWindow):
                 r = self.connection.query(widget.get_command())
 
             else:
-
+                print("here")
                 uart = serial.Serial("/dev/ttyUSB0", baudrate=115200)
-                r = float(uart.readline().decode('utf-8'))
+                r = uart.read_until().decode('utf-8')
                 print(type(r), " ", r)
+                r = float(r)
                 uart.close()
 
             widget.render(r)
