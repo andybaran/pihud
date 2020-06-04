@@ -40,7 +40,6 @@ class GlobalConfig():
     def load(self):
         """ reads a config from a file """
 
-        # read the file
         file_config = None;
 
         if os.path.isfile(self.filename):

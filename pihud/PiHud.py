@@ -1,12 +1,4 @@
-#SparkFun QWIIC BME280 Pressure Sensor
-import smbus2
-import bme280
-
-#Adafruit ported MPRLS Pressure Sensor
-import time
-import board
-import busio
-import adafruit_mprls
+import serial
 
 from pihud.Page import Page
 from pihud.Widget import Widget
@@ -43,8 +35,8 @@ class PiHud(QtWidgets.QMainWindow):
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
-        ''' TODO: this looks like it's building out a menu for each supported OBD command
-        cool but unnecesary for MVP'''
+        ''' TODO: Activate this with a gesture or two-finger touch '''
+
         self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
 
@@ -106,21 +98,10 @@ class PiHud(QtWidgets.QMainWindow):
 
             else:
 
-                #TODO: Figure out how to do all this with one library
-                # Get BME280 Sensor Value
-                port = 1
-                bus = smbus2.SMBus(port)
-                bmeaddress = 0x77
-                bme_calibration_params = bme280.load_calibration_params(bus, bmeaddress)
-                bmedata = bme280.sample(bus, bmeaddress, bme_calibration_params)
-                
-                # Get MPRLS Sesnor Value
-                mprlsi2c = busio.I2C(board.SCL, board.SDA)
-                mprlsdata = adafruit_mprls.MPRLS(mprlsi2c, psi_min=0, psi_max=25)
-
-                # Calucate boost or vacuum and close connection to I2C bus
-                r = round(((mprlsdata.pressure - bmedata.pressure) * 0.0145037738),2)
-                bus.close()
+                uart = serial.Serial("/dev/ttyUSB0", baudrate=115200)
+                r = float(uart.readline().decode('utf-8'))
+                print(type(r), " ", r)
+                uart.close()
 
             widget.render(r)
 
