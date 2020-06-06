@@ -6,7 +6,7 @@
     "redline_color": "#FF3643", 
     "font_size": 18, 
     "note_font_size": 15, 
-    "demo": false,
+    "demo": true,
     "pages": [
         [
             {
@@ -74,38 +74,6 @@
                 "buffer_size": 60
             },
             {
-                "sensor": "INTAKE_PRESSURE",
-                "type": "Bar_Vertical",
-                "title": "Intake kPa",
-                "x": 500,
-                "y": 5,
-                "w": 90,
-                "h": 200,
-                "min": 0,
-                "max": 255,
-                "redline": 200,
-                "numerals": true,
-                "scale_step": 1,
-                "scale_mult": 1,
-                "buffer_size": 60
-            },
-            {
-                "sensor": "INTAKE_PRESSURE",
-                "type": "Text",
-                "title": "",
-                "x": 513,
-                "y": 205,
-                "w": 90,
-                "h": 30,
-                "min": 0,
-                "max": 255,
-                "redline": 200,
-                "numerals": true,
-                "scale_step": 1000,
-                "scale_mult": 1000,
-                "buffer_size": 60
-            },
-            {
                 "sensor": "RPM",
                 "type": "Gauge",
                 "title": "RPM",
@@ -151,6 +119,22 @@
                 "max": 20,
                 "redline": 13,
                 "numerals": true,
+                "scale_step": 1, 
+                "scale_mult": 1,
+                "buffer_size": 60
+            },
+            {
+                "sensor": "Boost",
+                "type": "DigitalBoost",
+                "title": "Boost",
+                "x": 0,
+                "y": 240,
+                "w": 200,
+                "h": 200,
+                "min": -30,
+                "max": 20,
+                "redline": 13,
+                "numerals": false,
                 "scale_step": 1, 
                 "scale_mult": 1,
                 "buffer_size": 60

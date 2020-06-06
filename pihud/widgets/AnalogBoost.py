@@ -9,6 +9,7 @@ class AnalogBoost(QWidget):
         super(AnalogBoost, self).__init__(parent)
 
         self.config = config
+        print(config)
         config.update({'min' : -30, 
             'max' : 20, 
             'color' : '#2e3fcc', 
