@@ -36,32 +36,6 @@ class PiHud(QtWidgets.QMainWindow):
         for configs in global_config["pages"]:
             self.__add_existing_page(configs)
 
-        # ================= Context Menu ==================
-        ''' TODO: Activate this with a gesture or two-finger touch 
-        see : 
-        https://doc.qt.io/qt-5/qtouchevent.html 
-        https://doc.qt.io/qt-5/qml-qtquick-multipointtoucharea.html'''
-
-        self.menu = QtWidgets.QMenu()
-        subMenu = self.menu.addMenu("Add Widget")
-
-        if len(self.connection.supported_commands) > 0:
-            for command in self.connection.supported_commands:
-                a = subMenu.addAction(command.name)
-                a.setData(command)
-        else:
-            a = subMenu.addAction("No sensors available")
-            a.setDisabled(True)
-        
-        self.menu.addSeparator()
-
-        self.menu.addAction("New Page", self.__add_page)
-        self.menu.addAction("Delete Page", self.__delete_page)
-
-        self.menu.addSeparator()
-
-        self.menu.addAction("Save Layout", self.__save)
-
         # ===================== Start =====================
         
         self.timer = QtCore.QBasicTimer()
@@ -148,18 +122,6 @@ class PiHud(QtWidgets.QMainWindow):
         # register the new command
         self.restart()
 
-
-    def delete_widget(self, page, widget):
-        # called by the pages themselves
-        page.widgets.remove(widget)
-        p = self.stack.indexOf(page)
-        widget.deleteLater()
-
-        # reload this page again, to unwatch (if neccessary,
-        # since multiple widgets could be using the same command)
-        self.restart()
-
-
     # ========= Page Actions =========
 
 
@@ -175,29 +137,7 @@ class PiHud(QtWidgets.QMainWindow):
                 self.__add_existing_widget(page, config)
 
         self.stack.addWidget(page)
-        
-
-    def __add_page(self):
-        """ adds a new (empty) page to the end of the page stack """
-        self.__add_existing_page()
-        self.goto_page(self.__count() - 1)
-
-
-    def __delete_page(self):
-        if self.__count() > 1:
-
-            self.stop()
-
-            page = self.__page()
-
-            for widget in page.widgets:
-                self.delete_widget(page, widget)
-
-            self.stack.removeWidget(page)
-            page.deleteLater()
-            self.goto_page(self.__index()) # calls start()
-
-
+    
     def goto_page(self, p):
         p = p % len(self.stack)
 
