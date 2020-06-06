@@ -38,7 +38,9 @@ class PiHud(QtWidgets.QMainWindow):
 
         # ================= Context Menu ==================
         ''' TODO: Activate this with a gesture or two-finger touch 
-        see https://doc.qt.io/qt-5/qtouchevent.html '''
+        see : 
+        https://doc.qt.io/qt-5/qtouchevent.html 
+        https://doc.qt.io/qt-5/qml-qtquick-multipointtoucharea.html'''
 
         self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
@@ -219,7 +221,7 @@ class PiHud(QtWidgets.QMainWindow):
     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
         if action is not None:
-            command = action.data().toPyObject()
+            command = action.data()#.toPyObject()
             # if this is a command creation action, make the new widget
             # there's got to be a better way to do this...
             if command is not None:
@@ -240,6 +242,8 @@ class PiHud(QtWidgets.QMainWindow):
     # Handle touch events
     def eventFilter(self, obj, event):
         if event.type() == QEvent.TouchBegin:
+            for item in event.touchPoints():
+                print(item)
             self.next_page()
             return True
         elif event.type() == QEvent.TouchEnd:
