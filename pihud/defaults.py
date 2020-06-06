@@ -56,7 +56,7 @@ for command in defaults:
 def default_for(command):
     ''' handle the special boost gauge type '''   
     if command == 'Boost':
-        print
+        #print
         config = {'min' : -14, 
             'max' : 20, 
             'color' : '#2e3fcc', 
