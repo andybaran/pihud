@@ -37,7 +37,8 @@ class PiHud(QtWidgets.QMainWindow):
             self.__add_existing_page(configs)
 
         # ================= Context Menu ==================
-        ''' TODO: Activate this with a gesture or two-finger touch '''
+        ''' TODO: Activate this with a gesture or two-finger touch 
+        see https://doc.qt.io/qt-5/qtouchevent.html '''
 
         self.menu = QtWidgets.QMenu()
         subMenu = self.menu.addMenu("Add Widget")
@@ -97,15 +98,12 @@ class PiHud(QtWidgets.QMainWindow):
             if widget.config['type'] not in self.nonOBD:
                 r = self.connection.query(widget.get_command())
             else:
-                print("here")
                 r = self.uart.read_until(size=4)
-                print("paaaaackkkeeddd = ", r)
                 if len(r) == 1:
                     r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
                 else:
                     r = struct.unpack('<i',r)
                     r = r[0]
-                    print("AAAARRRRRRRRRRR = ", r)
 
             widget.render(r)
 
