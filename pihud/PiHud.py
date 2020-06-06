@@ -1,12 +1,5 @@
-#SparkFun QWIIC BME280 Pressure Sensor
-import smbus2
-import bme280
-
-#Adafruit ported MPRLS Pressure Sensor
-import time
-import board
-import busio
-import adafruit_mprls
+import serial
+import struct
 
 from pihud.Page import Page
 from pihud.Widget import Widget
@@ -18,13 +11,14 @@ from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import Qt
 
 class PiHud(QtWidgets.QMainWindow):
-    def __init__(self, global_config, connection):
+    def __init__(self, global_config, connection,uart_connection):
         super(PiHud, self).__init__()
 
         self.nonOBD = ['AnalogBoost','DigitalBoost']
 
         self.global_config = global_config
         self.connection = connection
+        self.uart = uart_connection
 
         # ================= Color Palette =================
 
@@ -41,29 +35,6 @@ class PiHud(QtWidgets.QMainWindow):
         # read the config and make pages
         for configs in global_config["pages"]:
             self.__add_existing_page(configs)
-
-        # ================= Context Menu ==================
-        ''' TODO: this looks like it's building out a menu for each supported OBD command
-        cool but unnecesary for MVP'''
-        self.menu = QtWidgets.QMenu()
-        subMenu = self.menu.addMenu("Add Widget")
-
-        if len(self.connection.supported_commands) > 0:
-            for command in self.connection.supported_commands:
-                a = subMenu.addAction(command.name)
-                a.setData(command)
-        else:
-            a = subMenu.addAction("No sensors available")
-            a.setDisabled(True)
-        
-        self.menu.addSeparator()
-
-        self.menu.addAction("New Page", self.__add_page)
-        self.menu.addAction("Delete Page", self.__delete_page)
-
-        self.menu.addSeparator()
-
-        self.menu.addAction("Save Layout", self.__save)
 
         # ===================== Start =====================
         
@@ -101,26 +72,14 @@ class PiHud(QtWidgets.QMainWindow):
 
         for widget in page.widgets:
             if widget.config['type'] not in self.nonOBD:
-
                 r = self.connection.query(widget.get_command())
-
             else:
-
-                #TODO: Figure out how to do all this with one library
-                # Get BME280 Sensor Value
-                port = 1
-                bus = smbus2.SMBus(port)
-                bmeaddress = 0x77
-                bme_calibration_params = bme280.load_calibration_params(bus, bmeaddress)
-                bmedata = bme280.sample(bus, bmeaddress, bme_calibration_params)
-                
-                # Get MPRLS Sesnor Value
-                mprlsi2c = busio.I2C(board.SCL, board.SDA)
-                mprlsdata = adafruit_mprls.MPRLS(mprlsi2c, psi_min=0, psi_max=25)
-
-                # Calucate boost or vacuum and close connection to I2C bus
-                r = round(((mprlsdata.pressure - bmedata.pressure) * 0.0145037738),2)
-                bus.close()
+                r = self.uart.read_until(size=4)
+                if len(r) == 1:
+                    r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
+                else:
+                    r = struct.unpack('<i',r)
+                    r = r[0]
 
             widget.render(r)
 
@@ -131,7 +90,7 @@ class PiHud(QtWidgets.QMainWindow):
             if widget.config['type'] not in self.nonOBD:
                 self.connection.watch(widget.get_command())
         self.connection.start()
-        self.timer.start(1000/30, self) #this defines the refresh value in milliseconds default working was 1000/30 or roughly 3 times/second
+        self.timer.start(1000/30, self) #this defines the refresh value in milliseconds...3 times per second seems reasonable
 
 
     def stop(self):
@@ -163,18 +122,6 @@ class PiHud(QtWidgets.QMainWindow):
         # register the new command
         self.restart()
 
-
-    def delete_widget(self, page, widget):
-        # called by the pages themselves
-        page.widgets.remove(widget)
-        p = self.stack.indexOf(page)
-        widget.deleteLater()
-
-        # reload this page again, to unwatch (if neccessary,
-        # since multiple widgets could be using the same command)
-        self.restart()
-
-
     # ========= Page Actions =========
 
 
@@ -190,29 +137,7 @@ class PiHud(QtWidgets.QMainWindow):
                 self.__add_existing_widget(page, config)
 
         self.stack.addWidget(page)
-        
-
-    def __add_page(self):
-        """ adds a new (empty) page to the end of the page stack """
-        self.__add_existing_page()
-        self.goto_page(self.__count() - 1)
-
-
-    def __delete_page(self):
-        if self.__count() > 1:
-
-            self.stop()
-
-            page = self.__page()
-
-            for widget in page.widgets:
-                self.delete_widget(page, widget)
-
-            self.stack.removeWidget(page)
-            page.deleteLater()
-            self.goto_page(self.__index()) # calls start()
-
-
+    
     def goto_page(self, p):
         p = p % len(self.stack)
 
@@ -232,11 +157,10 @@ class PiHud(QtWidgets.QMainWindow):
 
     # ========= Window Actions =========
 
-
     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
         if action is not None:
-            command = action.data().toPyObject()
+            command = action.data()#.toPyObject()
             # if this is a command creation action, make the new widget
             # there's got to be a better way to do this...
             if command is not None:
@@ -257,11 +181,11 @@ class PiHud(QtWidgets.QMainWindow):
     # Handle touch events
     def eventFilter(self, obj, event):
         if event.type() == QEvent.TouchBegin:
-            #print(event.type(), " " , "I was touched")
+            for item in event.touchPoints():
+                print(item)
             self.next_page()
             return True
         elif event.type() == QEvent.TouchEnd:
-            #print(event.type(), " " ,"That was nice....")
             return True    
         return super(PiHud, self).eventFilter(obj,event)
 

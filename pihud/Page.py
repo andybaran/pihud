@@ -25,8 +25,3 @@ class Page(QtWidgets.QWidget):
         e.source().move(e.pos() - QtCore.QPoint(x, y))
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
-
-
-    def delete_widget(self, widget):
-        # refer all deletion requests to the main window (PiHud.py)
-        self.pihud.delete_widget(self, widget)

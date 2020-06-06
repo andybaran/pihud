@@ -1,6 +1,6 @@
 {
     "debug": false, 
-    "port": "/dev/ttyS0", 
+    "port": "/dev/pts/1", 
     "page_adv_pin": 18, 
     "color": "#2e3fcc", 
     "redline_color": "#ff0000", 
@@ -18,11 +18,11 @@
                 "w": 200,
                 "h": 200,
                 "min": 0,
-                "max": 20,
-                "redline": 14,
+                "max": 8000,
+                "redline": 6000,
                 "numerals": true,
-                "scale_step": 1, 
-                "scale_mult": 1,
+                "scale_step": 50, 
+                "scale_mult": 100,
                 "buffer_size": 60
             },
             {
@@ -41,8 +41,8 @@
                 "scale_step": 10,
                 "scale_mult": 1,
                 "buffer_size": 60
-},
-{
+            },
+            {
                 "sensor": "RPM",
                 "type": "Text",
                 "title": "",
@@ -285,9 +285,9 @@
                 "buffer_size": 60
             },
             {
-                "sensor": "LONG_FUEL_TRIM_1",
-                "type": "DigitalGauge",
-                "title": "Long Fuel Trim",
+                "sensor": "Boost",
+                "type": "AnalogBoost",
+                "title": "Boost",
                 "x": 600,
                 "y": 240,
                 "w": 200,
@@ -312,7 +312,7 @@
                 "max": 100,
                 "redline": 100,
                 "numerals": true,
-		"align": "Right",
+		        "align": "Right",
                 "scale_step": 1000,
                 "scale_mult": 1000,
                 "buffer_size": 60

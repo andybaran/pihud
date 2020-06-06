@@ -40,7 +40,6 @@ class GlobalConfig():
     def load(self):
         """ reads a config from a file """
 
-        # read the file
         file_config = None;
 
         if os.path.isfile(self.filename):
@@ -84,30 +83,6 @@ class GlobalConfig():
             pages.append(current_page)
 
         self.data['pages'] = pages
-
-
-    def save(self, pages_configs):
-        """ write the config back to the file """
-        
-        if os.path.isfile(self.filename):
-
-            pages = []
-
-            for page in pages_configs:
-
-                current_page = []
-
-                for config in page:
-                    # for JSON output, reference the OrderedDict inside the Config
-                    current_page.append(config.data)
-
-                pages.append(current_page)
-
-            self.data["pages"] = pages
-
-            with open(self.filename, 'w') as f:
-                f.write(json.dumps(self.data, indent=4))
-
 
     def __getitem__(self, key):
         if key in self.data:

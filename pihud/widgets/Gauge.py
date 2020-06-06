@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QRect, Qt, QPoint
+from PyQt5.QtCore import QRect, Qt, QPoint, QSize
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPolygon
 
