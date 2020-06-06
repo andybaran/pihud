@@ -98,7 +98,16 @@ class GlobalConfig():
 
                 for config in page:
                     # for JSON output, reference the OrderedDict inside the Config
-                    current_page.append(config.data)
+                    try:
+                        config.data()
+                    except:
+                        print("type : ", type(config))
+                        print(config)
+                        current_page.append(config)
+                    else:
+                        print("type : ", type(config.data()))
+                        print(config.data())
+                        current_page.append(config.data())
 
                 pages.append(current_page)
 

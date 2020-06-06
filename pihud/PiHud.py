@@ -217,7 +217,6 @@ class PiHud(QtWidgets.QMainWindow):
 
     # ========= Window Actions =========
 
-
     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
         if action is not None:
