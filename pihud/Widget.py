@@ -85,7 +85,9 @@ class Widget(QtWidgets.QWidget):
             raise KeyError("'%s' is not a valid OBDCommand" % s)
 
     def render(self, response):
-        if isinstance(response, float):
+
+        # we might grab an INT from a CLI command, serial, etc.
+        if isinstance(response, int):
             self.graphics.render(response)
             return     
 

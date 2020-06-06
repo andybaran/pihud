@@ -9,6 +9,7 @@ ExecStart=/usr/bin/python3 -m pihud
 #RestartSec=10s
 KillMode=process
 #TimeoutSec=infinity
+User=pi
 
 [Install]
 WantedBy=graphical.target

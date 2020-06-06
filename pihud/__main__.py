@@ -3,6 +3,8 @@ import os
 import sys
 import obd
 import shutil
+import serial
+
 from pihud.PiHud import PiHud
 from PyQt5 import QtWidgets
 from pihud import GlobalConfig
@@ -35,13 +37,14 @@ def main():
     print('[pihud] OBD2 Port: ', global_config["port"])
     connection = obd.Async(global_config["port"],baudrate=115200,fast=False)
 
+    uart = serial.Serial("/dev/ttyAMA1", baudrate=115200)
+    
     # ============================ QT Application =============================
     
     app = QtWidgets.QApplication(sys.argv)
-    hud = PiHud(global_config, connection)
-    
-    # Hide the cursor for the application that "contains" the hud
-    # TODO: figure out how to do this 
+    hud = PiHud(global_config, connection,uart)
+
+    # TODO: Hide the cursor for the application that "contains" the hud
 
     # Enable Touch for the hud
     hud.setAttribute(Qt.WA_AcceptTouchEvents,True)

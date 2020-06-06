@@ -1,4 +1,5 @@
 import serial
+import struct
 
 from pihud.Page import Page
 from pihud.Widget import Widget
@@ -10,13 +11,14 @@ from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import Qt
 
 class PiHud(QtWidgets.QMainWindow):
-    def __init__(self, global_config, connection):
+    def __init__(self, global_config, connection,uart_connection):
         super(PiHud, self).__init__()
 
         self.nonOBD = ['AnalogBoost','DigitalBoost']
 
         self.global_config = global_config
         self.connection = connection
+        self.uart = uart_connection
 
         # ================= Color Palette =================
 
@@ -93,16 +95,17 @@ class PiHud(QtWidgets.QMainWindow):
 
         for widget in page.widgets:
             if widget.config['type'] not in self.nonOBD:
-
                 r = self.connection.query(widget.get_command())
-
             else:
                 print("here")
-                uart = serial.Serial("/dev/ttyUSB0", baudrate=115200)
-                r = uart.read_until().decode('utf-8')
-                print(type(r), " ", r)
-                r = float(r)
-                uart.close()
+                r = self.uart.read_until(size=4)
+                print("paaaaackkkeeddd = ", r)
+                if len(r) == 1:
+                    r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
+                else:
+                    r = struct.unpack('<i',r)
+                    r = r[0]
+                    print("AAAARRRRRRRRRRR = ", r)
 
             widget.render(r)
 
@@ -113,7 +116,7 @@ class PiHud(QtWidgets.QMainWindow):
             if widget.config['type'] not in self.nonOBD:
                 self.connection.watch(widget.get_command())
         self.connection.start()
-        self.timer.start(1000/30, self) #this defines the refresh value in milliseconds default working was 1000/30 or roughly 3 times/second
+        self.timer.start(1000/30, self) #this defines the refresh value in milliseconds...3 times per second seems reasonable
 
 
     def stop(self):
@@ -239,11 +242,9 @@ class PiHud(QtWidgets.QMainWindow):
     # Handle touch events
     def eventFilter(self, obj, event):
         if event.type() == QEvent.TouchBegin:
-            #print(event.type(), " " , "I was touched")
             self.next_page()
             return True
         elif event.type() == QEvent.TouchEnd:
-            #print(event.type(), " " ,"That was nice....")
             return True    
         return super(PiHud, self).eventFilter(obj,event)
 
