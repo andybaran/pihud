@@ -3,7 +3,6 @@ import struct
 
 from pihud.Page import Page
 from pihud.Widget import Widget
-from pihud.PageMarker import PageMarker
 from PyQt5 import QtWidgets, QtCore, QtGui
 
 #Touch events
@@ -28,7 +27,6 @@ class PiHud(QtWidgets.QMainWindow):
 
         # ================== Init Pages ===================
 
-        self.pageMarker = PageMarker(self)
         self.stack      = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stack)
 
@@ -126,10 +124,6 @@ class PiHud(QtWidgets.QMainWindow):
 
 
     def __add_existing_page(self, configs=None):
-        """ adds a page and fills with the given widgets 
-        since we could have an input method to select the viewable widgets on given page.
-        think about a seperate page for OBD2 and Spotify where PageMarker keeps track of the individual pages
-        and each individual page keeps track of its stack of widgets """
         page = Page(self.stack, self)
 
         if configs is not None:
@@ -145,7 +139,6 @@ class PiHud(QtWidgets.QMainWindow):
 
         # switch page
         self.stack.setCurrentIndex(p)
-        #self.pageMarker.set(self.__count(), self.__index())
 
         self.start()
 

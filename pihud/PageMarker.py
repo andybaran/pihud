@@ -5,7 +5,7 @@ class PageMarker(QtWidgets.QWidget):
     def __init__(self, parent):
         super(PageMarker, self).__init__(parent)
 
-        self.height     = 10
+        self.height     = 100
         self.bg_color   = QtGui.QColor(255, 255, 255, 50)
         self.fg_color   = QtGui.QColor(255, 255, 255, 70)
         self.screenRect = QtWidgets.QApplication.desktop().screen().rect()
