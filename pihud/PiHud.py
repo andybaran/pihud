@@ -10,10 +10,11 @@ from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import Qt
 
 class PiHud(QtWidgets.QMainWindow):
-    def __init__(self, global_config, connection,uart_connection):
+    def __init__(self, global_config, connection, uart_connection):
         super(PiHud, self).__init__()
 
-        self.nonOBD = ['AnalogBoost','DigitalBoost']
+        # === Temporary dict to handle non OBD gauges =====
+        self.nonOBD = ['AnalogBoost','DigitalBoost'] 
 
         self.global_config = global_config
         self.connection = connection
@@ -101,27 +102,7 @@ class PiHud(QtWidgets.QMainWindow):
         self.stop()
         self.start()
 
-    # ========= Widget Actions =========
-
-    def __add_existing_widget(self, page, config):
-        # make a widget from the given config
-        thiswidget = Widget(page, config)
-
-        # add it to the page
-        page.widgets.append(thiswidget)
-
-    def __add_widget(self, command):
-        # make a default config for this command
-        config = self.global_config.make_config(command)
-
-        # construct a new widget on this page
-        self.__add_existing_widget(self.__page(), config)
-
-        # register the new command
-        self.restart()
-
     # ========= Page Actions =========
-
 
     def __add_existing_page(self, configs=None):
         page = Page(self.stack, self)
@@ -144,6 +125,28 @@ class PiHud(QtWidgets.QMainWindow):
 
 
     def next_page(self):
+    
+    
+    # ========= Widget Actions =========
+
+    def __add_existing_widget(self, page, config):
+        # make a widget from the given config
+        thiswidget = Widget(page, config)
+
+        # add it to the page
+        page.widgets.append(thiswidget)
+
+    def __add_widget(self, command):
+        # make a default config for this command
+        config = self.global_config.make_config(command)
+
+        # construct a new widget on this page
+        self.__add_existing_widget(self.__page(), config)
+
+        # register the new command
+        self.restart()
+
+
         """ cycle through the screen stack """
         self.goto_page(self.__index() + 1)
 

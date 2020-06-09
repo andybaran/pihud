@@ -23,12 +23,11 @@ def main():
         print("[pihud] using config: ", config_path)
         
     if not os.path.isfile(config_path):
-        print("[pihud] Fatal: Missing default config file. Try reinstalling")
+        print("[pihud] Fatal: Missing config file at /etc/pihud/pihud.rc")
         sys.exit(1)
 
     global_config = GlobalConfig.GlobalConfig(config_path)
     
-
     # =========================== OBD-II Connection ===========================
 
     if global_config["debug"]:
@@ -37,12 +36,14 @@ def main():
     print('[pihud] OBD2 Port: ', global_config["port"])
     connection = obd.Async(global_config["port"],baudrate=115200,fast=False)
 
+    # =========================== Generic Serial Connection ==================
+
     uart = serial.Serial("/dev/ttyAMA1", baudrate=115200)
     
     # ============================ QT Application =============================
     
     app = QtWidgets.QApplication(sys.argv)
-    hud = PiHud(global_config, connection,uart)
+    hud = PiHud(global_config, connection, uart)
 
     # TODO: Hide the cursor for the application that "contains" the hud
 
