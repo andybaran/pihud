@@ -70,15 +70,16 @@ class PiHud(QtWidgets.QMainWindow):
         page = self.__page()
 
         for widget in page.widgets:
-            if widget.config['type'] not in self.nonOBD:
-                r = self.connection.query(widget.get_command())
-            else:
-                r = self.uart.read_until(size=4)
-                if len(r) == 1:
-                    r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
-                else:
-                    r = struct.unpack('<i',r)
-                    r = r[0]
+            widget.get_command()
+            #if widget.config['type'] not in self.nonOBD:
+            #    r = self.connection.query(widget.get_command())
+            #else:
+            #    r = self.uart.read_until(size=4)
+            #    if len(r) == 1:
+            #       r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
+            #    else:
+            #        r = struct.unpack('<i',r)
+            #        r = r[0]
 
             widget.render(r)
 

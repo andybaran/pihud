@@ -77,12 +77,24 @@ class Widget(QtWidgets.QWidget):
     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
 
+    
+    def commands(self, func):
+
+    
     def get_command(self):
+        datapoller = getattr(self, self.config["datapoller"], lambda: 'No data poller defined')
+        return datapoller()
+
+    def obd2Adapter(self):
         s = self.config["sensor"]
         if s in obd.commands:
             return obd.commands[s]
         else:
             raise KeyError("'%s' is not a valid OBDCommand" % s)
+    
+    def get_boost(self):
+
+    def get_generic(self):
 
     def render(self, response):
 
