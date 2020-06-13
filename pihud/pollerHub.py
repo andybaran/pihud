@@ -4,6 +4,8 @@
 
 # setup a place in __main or pihud to have connections already open and waiting to avoid latency
 
+import serial
+
 class pollerHub:
    DEFAULT = "_default"
    def _default(): raise ValueError('Polller function not defined')
@@ -28,6 +30,7 @@ def _obd():
 
 @pollerHub('boost')
 def _boost():
+    uart = serial.Serial("/dev/ttyAMA1", baudrate=115200)
     print("SONIC BOOM!")
 
 @pollerHub('uart')
