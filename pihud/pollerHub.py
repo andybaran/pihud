@@ -5,6 +5,7 @@
 # setup a place in __main or pihud to have connections already open and waiting to avoid latency
 
 import serial
+import random
 
 class pollerHub:
    DEFAULT = "_default"
@@ -33,4 +34,10 @@ def _boost():
     else:
         r = struct.unpack('<i',r)
         r = r[0]
+    return r
+
+@pollerHub('random')
+def _random():
+    r = random.randint(1000,8000)
+    print(r)
     return r

@@ -89,7 +89,8 @@ class Widget(QtWidgets.QWidget):
             else:
                 raise KeyError("'%s' is not a valid OBDCommand" % s)
         else:
-            return pollerHub.poll(self.config['datapoller'])
+            r = pollerHub.poll(self.config['datapoller'])
+            return r
 
     def render(self, response):
         # we might grab an INT from a CLI command, serial, etc. which could be equal to 0 (null)

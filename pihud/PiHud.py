@@ -77,8 +77,10 @@ class PiHud(QtWidgets.QMainWindow):
             #    else:
             #        r = struct.unpack('<i',r)
             #        r = r[0]
-
-            widget.render(self.connection.query(widget.get_command()))
+            if widget.config['datapoller'] == "obd":
+                widget.render(self.connection.query(widget.get_command()))
+            else :
+                widget.render(widget.get_command())
 
 
     def start(self):

@@ -62,10 +62,10 @@ def default_for(command):
         print("[pihud]: No default config for ", command)
         config = fallback_default.clone()
     
-    #if hasattr(command,'name'):
-    config["sensor"] = command.name
-    #if hasattr(command,'desc'):
-    config["title"] = command.desc
-    print("config : ",config)
+    if hasattr(command,'name'):
+        config["sensor"] = command.name
+    if hasattr(command,'desc'):
+        config["title"] = command.desc
+    print("config after default_for : ",config)
     return config
 

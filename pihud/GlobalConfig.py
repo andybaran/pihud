@@ -74,11 +74,10 @@ class GlobalConfig():
                 sensor = sensor.decode()
                 print("here")
                 if widget.get("datapoller") == 'obd':
-                    print("datapoller is obd")
+                    print("datapoller is ", widget.get('datapoller'))
                     config = self.make_config(obd.commands[sensor])
-                    # load the keys/data into the global config
                 else:
-                    config = widget # this can obviously be removed after troubleshooting
+                    config = self.make_config(sensor) 
                 self.__load_keys(widget, config)
                 current_page.append(config)
             pages.append(current_page)
