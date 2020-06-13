@@ -127,7 +127,8 @@ class PiHud(QtWidgets.QMainWindow):
         self.start()
 
     def next_page(self):
-        return True
+        self.goto_page(self.__index() + 1)
+
 
         
     # ========= Widget Actions =========

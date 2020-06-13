@@ -25,7 +25,9 @@
                 "scale_step": 1000,
                 "scale_mult": 1000,
                 "buffer_size": 60
-            },
+            }
+        ],
+        [
             {
                 "sensor": "Radom_RPM",
                 "type": "Gauge",
