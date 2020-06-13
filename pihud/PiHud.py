@@ -2,6 +2,7 @@ import serial
 import struct
 
 from pihud.Page import Page
+from pihud.pollerHub import pollerHub, sensorvalue
 from pihud.Widget import Widget
 from PyQt5 import QtWidgets, QtCore, QtGui
 
@@ -13,12 +14,8 @@ class PiHud(QtWidgets.QMainWindow):
     def __init__(self, global_config, connection, uart_connection):
         super(PiHud, self).__init__()
 
-        # === Temporary dict to handle non OBD gauges =====
-        self.nonOBD = ['AnalogBoost','DigitalBoost'] 
-
         self.global_config = global_config
         self.connection = connection
-        self.uart = uart_connection
 
         # ================= Color Palette =================
 
@@ -70,23 +67,28 @@ class PiHud(QtWidgets.QMainWindow):
         page = self.__page()
 
         for widget in page.widgets:
-            if widget.config['type'] not in self.nonOBD:
-                r = self.connection.query(widget.get_command())
-            else:
-                r = self.uart.read_until(size=4)
-                if len(r) == 1:
-                    r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
-                else:
-                    r = struct.unpack('<i',r)
-                    r = r[0]
-
-            widget.render(r)
+            #widget.get_command()
+            #if widget.config['type'] not in self.nonOBD:
+            #    r = self.connection.query(widget.get_command())
+            #else:
+            #    r = self.uart.read_until(size=4)
+            #    if len(r) == 1:
+            #       r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
+            #    else:
+            #        r = struct.unpack('<i',r)
+            #        r = r[0]
+            if widget.config['datapoller'] == "obd":
+                widget.render(self.connection.query(widget.get_command()))
+            else :
+                r = widget.get_command()
+                print("arrrrrrrrrrrrrr ", r)
+                widget.render(r)
 
 
     def start(self):
         # watch the commands on this page
         for widget in self.__page().widgets:
-            if widget.config['type'] not in self.nonOBD:
+            if widget.config['datapoller'] == "obd":
                 self.connection.watch(widget.get_command())
         self.connection.start()
         self.timer.start(1000/30, self) #this defines the refresh value in milliseconds...3 times per second seems reasonable
@@ -109,6 +111,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         if configs is not None:
             for config in configs:
+                print("adding widget : ", config)
                 self.__add_existing_widget(page, config)
 
         self.stack.addWidget(page)
@@ -123,10 +126,10 @@ class PiHud(QtWidgets.QMainWindow):
 
         self.start()
 
-
     def next_page(self):
-    
-    
+        return True
+
+        
     # ========= Widget Actions =========
 
     def __add_existing_widget(self, page, config):
@@ -149,7 +152,6 @@ class PiHud(QtWidgets.QMainWindow):
 
         """ cycle through the screen stack """
         self.goto_page(self.__index() + 1)
-
 
     # ========= Window Actions =========
 
@@ -184,8 +186,6 @@ class PiHud(QtWidgets.QMainWindow):
         elif event.type() == QEvent.TouchEnd:
             return True    
         return super(PiHud, self).eventFilter(obj,event)
-
-
 
     def closeEvent(self, e):
         quit()

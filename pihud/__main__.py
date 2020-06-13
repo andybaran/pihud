@@ -12,7 +12,7 @@ from pihud import GlobalConfig
 #Touch
 from PyQt5.QtCore import Qt, QEvent
 
-config_path         ='/etc/pihud/pihud.rc'
+config_path         ='/etc/pihud/pihud.json'
 
 def main():
     """ entry point """
@@ -23,7 +23,7 @@ def main():
         print("[pihud] using config: ", config_path)
         
     if not os.path.isfile(config_path):
-        print("[pihud] Fatal: Missing config file at /etc/pihud/pihud.rc")
+        print("[pihud] Fatal: Missing config file at /etc/pihud/pihud.json")
         sys.exit(1)
 
     global_config = GlobalConfig.GlobalConfig(config_path)

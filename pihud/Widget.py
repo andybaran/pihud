@@ -1,5 +1,6 @@
 import obd
 from pihud import PiHud
+from pihud.pollerHub import pollerHub, sensorvalue
 from pihud.widgets import displaywidgets
 from PyQt5 import QtCore, QtWidgets
 
@@ -8,8 +9,9 @@ class Widget(QtWidgets.QWidget):
     def __init__(self, parent, config):
         super(Widget, self).__init__(parent)
         self.config = config
+        print("widget init config : ", config)
 
-        '''TODO : no need for a menu... at the moment'''
+        '''TODO : make this work with QML multitouch two finger touch'''
         self.menu = QtWidgets.QMenu()
         self.menu.addAction(self.config["sensor"]).setDisabled(True)
 
@@ -21,6 +23,7 @@ class Widget(QtWidgets.QWidget):
         self.menu.addAction("Delete Widget", self.delete)
     
         # instantiate the requested graphics object
+        print("from widget.py", config)
         self.graphics = displaywidgets[config["type"]](self, config)
 
         self.move(self.position())
@@ -76,20 +79,27 @@ class Widget(QtWidgets.QWidget):
 
     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
-
+    
+    
     def get_command(self):
-        s = self.config["sensor"]
-        if s in obd.commands:
-            return obd.commands[s]
+        if self.config['datapoller'] == 'obd':
+            s = self.config["sensor"]
+            if s in obd.commands:
+                return obd.commands[s]
+            else:
+                raise KeyError("'%s' is not a valid OBDCommand" % s)
         else:
-            raise KeyError("'%s' is not a valid OBDCommand" % s)
+            pollvalue = pollerHub.poll(self.config['datapoller'])
+            print("pollvalue ", pollvalue)
+            return pollvalue
 
     def render(self, response):
-
-        # we might grab an INT from a CLI command, serial, etc.
+        # we might grab an INT from a CLI command, serial, etc. which could be equal to 0 (null)
+        print("poll response is: ", response)
         if isinstance(response, int):
             self.graphics.render(response)
             return     
 
-        if not response.is_null():
-            self.graphics.render(response)
+        # TODO - There has to be a better way to handle this is_null doesn't work with pint ints
+        #if not response.is_null():
+        self.graphics.render(response)
