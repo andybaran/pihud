@@ -2,7 +2,7 @@ import serial
 import struct
 
 from pihud.Page import Page
-from pihud.pollerHub import pollerHub
+from pihud.pollerHub import pollerHub, sensorvalue
 from pihud.Widget import Widget
 from PyQt5 import QtWidgets, QtCore, QtGui
 
@@ -80,7 +80,9 @@ class PiHud(QtWidgets.QMainWindow):
             if widget.config['datapoller'] == "obd":
                 widget.render(self.connection.query(widget.get_command()))
             else :
-                widget.render(widget.get_command())
+                r = widget.get_command()
+                print("arrrrrrrrrrrrrr ", r)
+                widget.render(r)
 
 
     def start(self):

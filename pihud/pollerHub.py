@@ -6,6 +6,11 @@
 
 import serial
 import random
+import pint
+
+class sensorvalue:
+    def __init__(self):
+        self.value = pint
 
 class pollerHub:
    DEFAULT = "_default"
@@ -23,10 +28,12 @@ class pollerHub:
 
    @classmethod
    def poll(cls,commandType):
-       cls._func_map.get(commandType, cls._func_map[cls.DEFAULT])()
+       return cls._func_map.get(commandType, cls._func_map[cls.DEFAULT])()
+
 
 @pollerHub('boost')
 def _boost():
+    ureg = pint.UnitRegistry()
     uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
     r = self.uart.read_until(size=4)
     if len(r) == 1:
@@ -38,6 +45,8 @@ def _boost():
 
 @pollerHub('random')
 def _random():
-    r = random.randint(1000,8000)
-    print(r)
-    return r
+    ureg = pint.UnitRegistry()
+    readvalue = sensorvalue()
+    readvalue.value = random.randint(1000,8000) * ureg.psi
+    print(readvalue)
+    return readvalue

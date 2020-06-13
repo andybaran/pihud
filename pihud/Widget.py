@@ -1,6 +1,6 @@
 import obd
 from pihud import PiHud
-from pihud.pollerHub import pollerHub
+from pihud.pollerHub import pollerHub, sensorvalue
 from pihud.widgets import displaywidgets
 from PyQt5 import QtCore, QtWidgets
 
@@ -89,8 +89,9 @@ class Widget(QtWidgets.QWidget):
             else:
                 raise KeyError("'%s' is not a valid OBDCommand" % s)
         else:
-            r = pollerHub.poll(self.config['datapoller'])
-            return r
+            pollvalue = pollerHub.poll(self.config['datapoller'])
+            print("pollvalue ", pollvalue)
+            return pollvalue
 
     def render(self, response):
         # we might grab an INT from a CLI command, serial, etc. which could be equal to 0 (null)
@@ -99,5 +100,6 @@ class Widget(QtWidgets.QWidget):
             self.graphics.render(response)
             return     
 
-        if not response.is_null():
-            self.graphics.render(response)
+        # TODO - There has to be a better way to handle this is_null doesn't work with pint ints
+        #if not response.is_null():
+        self.graphics.render(response)
