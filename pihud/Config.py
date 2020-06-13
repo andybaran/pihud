@@ -21,6 +21,7 @@ class Config():
             ("sensor",      ""          ),
             ("type",        _class_name ),
             ("title",       ""          ),
+            ("datapoller",  ""          ),
             ("color",       "#2e3fcc"   ),
             ("x",           0           ),
             ("y",           0           ),

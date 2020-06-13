@@ -9,6 +9,7 @@ class Widget(QtWidgets.QWidget):
     def __init__(self, parent, config):
         super(Widget, self).__init__(parent)
         self.config = config
+        print("widget init config : ", config)
 
         '''TODO : make this work with QML multitouch two finger touch'''
         self.menu = QtWidgets.QMenu()
@@ -22,6 +23,7 @@ class Widget(QtWidgets.QWidget):
         self.menu.addAction("Delete Widget", self.delete)
     
         # instantiate the requested graphics object
+        print("from widget.py", config)
         self.graphics = displaywidgets[config["type"]](self, config)
 
         self.move(self.position())
@@ -91,6 +93,7 @@ class Widget(QtWidgets.QWidget):
 
     def render(self, response):
         # we might grab an INT from a CLI command, serial, etc. which could be equal to 0 (null)
+        print("poll response is: ", response)
         if isinstance(response, int):
             self.graphics.render(response)
             return     

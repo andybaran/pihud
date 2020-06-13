@@ -26,11 +26,11 @@ class pollerHub:
 
 @pollerHub('boost')
 def _boost():
-    uart = serial.Serial("/dev/ttyAMA1", baudrate=115200)
-     r = self.uart.read_until(size=4)
-        if len(r) == 1:
-            r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
-        else:
-            r = struct.unpack('<i',r)
-            r = r[0]
+    uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
+    r = self.uart.read_until(size=4)
+    if len(r) == 1:
+        r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
+    else:
+        r = struct.unpack('<i',r)
+        r = r[0]
     return r

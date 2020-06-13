@@ -1,0 +1,32 @@
+{
+    "debug": false, 
+    "port": "/dev/pts/0", 
+    "page_adv_pin": 18, 
+    "color": "##2e3fcc", 
+    "redline_color": "#FF3643", 
+    "font_size": 18, 
+    "note_font_size": 15, 
+    "demo": true,
+    "pages": [
+        [
+            {
+                "sensor": "RPM",
+                "type": "Gauge",
+                "title": "RPM",
+                "datapoller": "obd",
+                "x": 0,
+                "y": 5,
+                "w": 200,
+                "h": 200,
+                "min": 0,
+                "max": 8000,
+                "redline": 6000,
+                "numerals": true,
+                "scale_step": 1000,
+                "scale_mult": 1000,
+                "buffer_size": 60
+            }
+     
+        ]
+    ]
+}

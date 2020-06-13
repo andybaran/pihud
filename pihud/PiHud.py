@@ -67,7 +67,7 @@ class PiHud(QtWidgets.QMainWindow):
         page = self.__page()
 
         for widget in page.widgets:
-            widget.get_command()
+            #widget.get_command()
             #if widget.config['type'] not in self.nonOBD:
             #    r = self.connection.query(widget.get_command())
             #else:
@@ -78,7 +78,7 @@ class PiHud(QtWidgets.QMainWindow):
             #        r = struct.unpack('<i',r)
             #        r = r[0]
 
-            widget.render(r)
+            widget.render(self.connection.query(widget.get_command()))
 
 
     def start(self):
@@ -107,6 +107,7 @@ class PiHud(QtWidgets.QMainWindow):
 
         if configs is not None:
             for config in configs:
+                print("adding widget : ", config)
                 self.__add_existing_widget(page, config)
 
         self.stack.addWidget(page)
@@ -122,6 +123,8 @@ class PiHud(QtWidgets.QMainWindow):
         self.start()
 
     def next_page(self):
+        return True
+
         
     # ========= Widget Actions =========
 
