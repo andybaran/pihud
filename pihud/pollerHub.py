@@ -24,24 +24,13 @@ class pollerHub:
    def poll(cls,commandType):
        cls._func_map.get(commandType, cls._func_map[cls.DEFAULT])()
 
-@pollerHub('obd')
-def _obd():
-    print("mmmm...OBD")
-
 @pollerHub('boost')
 def _boost():
     uart = serial.Serial("/dev/ttyAMA1", baudrate=115200)
-    print("SONIC BOOM!")
-
-@pollerHub('uart')
-def _uart():
-    print("more serial data")
-
-def getcommand(obdcommand):
-    obdcommand = obdcommand
-    pollerHub.poll(obdcommand)
-
-getcommand('boost')
-getcommand('obd')
-getcommand('uart')
-#getcommand('smoke signals')
+     r = self.uart.read_until(size=4)
+        if len(r) == 1:
+            r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
+        else:
+            r = struct.unpack('<i',r)
+            r = r[0]
+    return r
