@@ -55,7 +55,7 @@ for command in defaults:
 # accessor for creating configs based on the defaults listed above
 def default_for(command):
     ''' handle the special boost gauge type '''   
-    if command == 'Boost':
+"""     if command == 'Boost':
         #print
         config = {'min' : -14, 
             'max' : 20, 
@@ -72,7 +72,7 @@ def default_for(command):
             'h': 200,
             'numerals': 'true',
             'sensor': 'Boost'}
-        return config
+        return config """
 
     ''' default obd2 gauge '''  
     if command in defaults:

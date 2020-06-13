@@ -1,5 +1,6 @@
 import obd
 from pihud import PiHud
+from pihud.pollerHub import pollerHub
 from pihud.widgets import displaywidgets
 from PyQt5 import QtCore, QtWidgets
 
@@ -9,7 +10,7 @@ class Widget(QtWidgets.QWidget):
         super(Widget, self).__init__(parent)
         self.config = config
 
-        '''TODO : no need for a menu... at the moment'''
+        '''TODO : make this work with QML multitouch two finger touch'''
         self.menu = QtWidgets.QMenu()
         self.menu.addAction(self.config["sensor"]).setDisabled(True)
 
@@ -76,29 +77,20 @@ class Widget(QtWidgets.QWidget):
 
     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
-
     
-    def commands(self, func):
-
     
     def get_command(self):
-        datapoller = getattr(self, self.config["datapoller"], lambda: 'No data poller defined')
-        return datapoller()
-
-    def obd2Adapter(self):
-        s = self.config["sensor"]
-        if s in obd.commands:
-            return obd.commands[s]
+        if self.config['datapoller'] == 'obd':
+            s = self.config["sensor"]
+            if s in obd.commands:
+                return obd.commands[s]
+            else:
+                raise KeyError("'%s' is not a valid OBDCommand" % s)
         else:
-            raise KeyError("'%s' is not a valid OBDCommand" % s)
-    
-    def get_boost(self):
-
-    def get_generic(self):
+            return pollerHub.poll(self.config['datapoller'])
 
     def render(self, response):
-
-        # we might grab an INT from a CLI command, serial, etc.
+        # we might grab an INT from a CLI command, serial, etc. which could be equal to 0 (null)
         if isinstance(response, int):
             self.graphics.render(response)
             return     

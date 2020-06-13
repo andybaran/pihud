@@ -13,6 +13,7 @@
                 "sensor": "Boost",
                 "type": "AnalogBoost",
                 "title": "Boost",
+                "datapoller": "boost",
                 "x": 0,
                 "y": 5,
                 "w": 200,
@@ -23,6 +24,26 @@
                 "numerals": true,
                 "scale_step": 1, 
                 "scale_mult": 1,
+                "buffer_size": 60
+            }
+
+        ],
+        [
+            {
+                "sensor": "RPM",
+                "type": "DigitalGauge",
+                "title": "RPM",
+                "datapoller": "obd",
+                "x": 0,
+                "y": 5,
+                "w": 200,
+                "h": 200,
+                "min": 0,
+                "max": 8000,
+                "redline": 6000,
+                "numerals": true,
+                "scale_step": 10, 
+                "scale_mult": 100,
                 "buffer_size": 60
             }
 
