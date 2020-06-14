@@ -8,7 +8,7 @@ import serial
 from pihud.PiHud import PiHud
 from PySide2 import QtWidgets
 from pihud import GlobalConfig
-from 
+
 #Touch
 from PySide2.QtCore import Qt, QEvent
 
