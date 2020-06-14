@@ -16,7 +16,6 @@ config_path         ='/etc/pihud/pihud.json'
 
 def main():
     """ entry point """
-
     # ============================ Config loading =============================
     
     if os.path.isfile(config_path):

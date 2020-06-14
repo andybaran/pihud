@@ -9,7 +9,7 @@ class Gauge(QWidget):
         super(Gauge, self).__init__(parent)
 
         self.config = config
-        print("config from gauge widget ", config)
+
         self.value = config["min"]
 
         self.font      = QFont()

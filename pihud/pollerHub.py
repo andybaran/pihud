@@ -48,5 +48,4 @@ def _random():
     ureg = pint.UnitRegistry()
     readvalue = sensorvalue()
     readvalue.value = random.randint(1000,8000) * ureg.psi
-    print(readvalue)
     return readvalue

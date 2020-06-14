@@ -23,7 +23,6 @@ class Widget(QtWidgets.QWidget):
         self.menu.addAction("Delete Widget", self.delete)
     
         # instantiate the requested graphics object
-        print("from widget.py", config)
         self.graphics = displaywidgets[config["type"]](self, config)
 
         self.move(self.position())
@@ -90,12 +89,10 @@ class Widget(QtWidgets.QWidget):
                 raise KeyError("'%s' is not a valid OBDCommand" % s)
         else:
             pollvalue = pollerHub.poll(self.config['datapoller'])
-            print("pollvalue ", pollvalue)
             return pollvalue
 
     def render(self, response):
         # we might grab an INT from a CLI command, serial, etc. which could be equal to 0 (null)
-        print("poll response is: ", response)
         if isinstance(response, int):
             self.graphics.render(response)
             return     

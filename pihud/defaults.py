@@ -54,12 +54,9 @@ for command in defaults:
 
 # accessor for creating configs based on the defaults listed above
 def default_for(command):
-    print("command : ", command)
     if command in defaults:
         config = defaults[command].clone()
-        print("replacing shit")
     else:
-        print("[pihud]: No default config for ", command)
         config = fallback_default.clone()
     
     if hasattr(command,'name'):
