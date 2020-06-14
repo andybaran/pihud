@@ -34,7 +34,6 @@ class pollerHub:
 
 @pollerHub('boost')
 def _boost():
-    ureg = pint.UnitRegistry()
     uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
     r = uart.read_until(size=4)
     if len(r) == 1:
@@ -42,6 +41,8 @@ def _boost():
     else:
         r = struct.unpack('<i',r)
         r = r[0]
+        if r > 70:  #in order to avoid 2's complement math gauge code add's 100 to any negative value; -30 is the lowest that can go.
+            r = r - 100
     return r
 
 @pollerHub('random')
@@ -49,10 +50,10 @@ def _random():
     ureg = pint.UnitRegistry()
     readvalue = sensorvalue()
     readvalue.value = random.randint(1000,8000) * ureg.psi
-    #print(type(readvalue))
-    #print(readvalue.__dict__)
-    #print(type(readvalue.value))
-    #print(readvalue.value.__dict__)
+    print(type(readvalue))
+    print(readvalue.__dict__)
+    print(type(readvalue.value))
+    print(readvalue.value.__dict__)
     
     #print()
     return readvalue
