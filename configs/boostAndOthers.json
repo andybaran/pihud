@@ -310,7 +310,7 @@
                 "y": 240,
                 "w": 200,
                 "h": 200,
-                "min": -30,
+                "min": -20,
                 "max": 20,
                 "redline": 14,
                 "numerals": true,
