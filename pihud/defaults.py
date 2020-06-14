@@ -54,35 +54,18 @@ for command in defaults:
 
 # accessor for creating configs based on the defaults listed above
 def default_for(command):
-    ''' handle the special boost gauge type '''   
-    if command == 'Boost':
-        #print
-        config = {'min' : -14, 
-            'max' : 20, 
-            'color' : '#2e3fcc', 
-            'redline_color' : '#ff0000', 
-            'scale_multi': 1, 
-            'scale_step': 1, 
-            'redline' : 14, 
-            'font_size' : 18, 
-            'title' : 'Boost',
-            'x': 0,
-            'y': 5,
-            'w': 200,
-            'h': 200,
-            'numerals': 'true',
-            'sensor': 'Boost'}
-        return config
-
-    ''' default obd2 gauge '''  
+    print("command : ", command)
     if command in defaults:
         config = defaults[command].clone()
+        print("replacing shit")
     else:
+        print("[pihud]: No default config for ", command)
         config = fallback_default.clone()
     
-    #if hasattr(command,'name'):
-    config["sensor"] = command.name
-    #if hasattr(command,'desc'):
-    config["title"] = command.desc
-
+    if hasattr(command,'name'):
+        config["sensor"] = command.name
+    if hasattr(command,'desc'):
+        config["title"] = command.desc
+    print("config after default_for : ",config)
     return config
+
