@@ -10,6 +10,23 @@
     "pages": [
         [
             {
+                "sensor": "Boost",
+                "type": "AnalogBoost",
+                "title": "Boost",
+                "datapoller": "boost",
+                "x": 600,
+                "y": 240,
+                "w": 200,
+                "h": 200,
+                "min": -20,
+                "max": 20,
+                "redline": 10,
+                "numerals": true,
+                "scale_step": 5,
+                "scale_mult": 1,
+                "buffer_size": 60
+            },
+            {
                 "sensor": "RPM",
                 "type": "DigitalGauge",
                 "title": "RPM",
@@ -160,7 +177,7 @@
                 "max": 200,
                 "redline": 105,
                 "numerals": true,
-		"align": "Left",
+		        "align": "Left",
                 "scale_step": 1,
                 "scale_mult": 1,
                 "buffer_size": 60
@@ -299,23 +316,6 @@
                 "numerals": true,
                 "scale_step": 1000,
                 "scale_mult": 1000,
-                "buffer_size": 60
-            },
-            {
-                "sensor": "Boost",
-                "type": "AnalogBoost",
-                "title": "Boost",
-                "datapoller": "boost",
-                "x": 600,
-                "y": 240,
-                "w": 200,
-                "h": 200,
-                "min": -20,
-                "max": 20,
-                "redline": 14,
-                "numerals": true,
-                "scale_step": 5,
-                "scale_mult": 1,
                 "buffer_size": 60
             },
             {
