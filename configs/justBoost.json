@@ -1,6 +1,6 @@
 {
     "debug": false, 
-    "port": "/dev/ttyS0", 
+    "port": "/dev/pts/2", 
     "page_adv_pin": 18, 
     "color": "#2e3fcc", 
     "redline_color": "#ff0000", 
@@ -18,11 +18,11 @@
                 "y": 5,
                 "w": 200,
                 "h": 200,
-                "min": -30,
+                "min": -20,
                 "max": 20,
                 "redline": 13,
                 "numerals": true,
-                "scale_step": 1, 
+                "scale_step": 5, 
                 "scale_mult": 1,
                 "buffer_size": 60
             }

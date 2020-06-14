@@ -9,32 +9,36 @@ import struct
 import random
 import pint
 
+ureg = pint.UnitRegistry()
+uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
+
 class sensorvalue:
     def __init__(self):
         self.value = pint
 
+readvalue = sensorvalue()
 class pollerHub:
-   DEFAULT = "_default"
-   def _default(): raise ValueError('Polller function not defined')
+    DEFAULT = "_default"
+    def _default(): raise ValueError('Polller function not defined')
 
-   _func_map = {DEFAULT: _default}
-   
-   def __init__(self,commandType):
-       super().__init__()
-       self.commandType = commandType
 
-   def __call__(self, poller_function):
+    _func_map = {DEFAULT: _default}
+
+    def __init__(self,commandType):
+        super().__init__()
+        self.commandType = commandType
+
+    def __call__(self, poller_function):
         self._func_map[self.commandType] = poller_function
         return poller_function
 
-   @classmethod
-   def poll(cls,commandType):
-       return cls._func_map.get(commandType, cls._func_map[cls.DEFAULT])()
+    @classmethod
+    def poll(cls,commandType):
+        return cls._func_map.get(commandType, cls._func_map[cls.DEFAULT])()
 
 
 @pollerHub('boost')
 def _boost():
-    uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
     r = uart.read_until(size=4)
     if len(r) == 1:
         r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
@@ -43,17 +47,10 @@ def _boost():
         r = r[0]
         if r > 70:  #in order to avoid 2's complement math gauge code add's 100 to any negative value; -30 is the lowest that can go.
             r = r - 100
+    readvalue.value = r * ureg.psi
     return r
 
 @pollerHub('random')
 def _random():
-    ureg = pint.UnitRegistry()
-    readvalue = sensorvalue()
     readvalue.value = random.randint(1000,8000) * ureg.psi
-    print(type(readvalue))
-    print(readvalue.__dict__)
-    print(type(readvalue.value))
-    print(readvalue.value.__dict__)
-    
-    #print()
     return readvalue
