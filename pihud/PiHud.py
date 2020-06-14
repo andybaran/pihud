@@ -1,5 +1,3 @@
-import serial
-import struct
 
 from pihud.Page import Page
 from pihud.pollerHub import pollerHub, sensorvalue
