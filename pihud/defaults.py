@@ -63,6 +63,5 @@ def default_for(command):
         config["sensor"] = command.name
     if hasattr(command,'desc'):
         config["title"] = command.desc
-    print("config after default_for : ",config)
     return config
 

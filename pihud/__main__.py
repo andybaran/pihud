@@ -48,6 +48,7 @@ def main():
 
     # Enable Touch for the hud
     hud.setAttribute(Qt.WA_AcceptTouchEvents,True)
+    #hud.setAttribute(Qt.AA_UseOpenGLES,True)
     hud.installEventFilter(hud)
 
     # ================================= Start =================================

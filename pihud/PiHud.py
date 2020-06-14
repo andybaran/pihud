@@ -169,7 +169,7 @@ class PiHud(QtWidgets.QMainWindow):
             self.next_page()
             return True
         elif event.type() == QEvent.TouchEnd:
-            return True    
+            return True 
         return super(PiHud, self).eventFilter(obj,event)
 
     def closeEvent(self, e):

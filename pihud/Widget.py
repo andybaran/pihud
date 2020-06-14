@@ -9,7 +9,6 @@ class Widget(QtWidgets.QWidget):
     def __init__(self, parent, config):
         super(Widget, self).__init__(parent)
         self.config = config
-        print("widget init config : ", config)
 
         '''TODO : make this work with QML multitouch two finger touch'''
         self.menu = QtWidgets.QMenu()
