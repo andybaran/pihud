@@ -5,6 +5,7 @@
 # setup a place in __main or pihud to have connections already open and waiting to avoid latency
 
 import serial
+import struct
 import random
 import pint
 
@@ -35,7 +36,7 @@ class pollerHub:
 def _boost():
     ureg = pint.UnitRegistry()
     uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
-    r = self.uart.read_until(size=4)
+    r = uart.read_until(size=4)
     if len(r) == 1:
         r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
     else:
