@@ -1,7 +1,7 @@
 import obd
 from pihud import PiHud
 from pihud.widgets import displaywidgets
-from PyQt5 import QtCore, QtWidgets
+from PySide2 import QtCore, QtWidgets
 
 class Widget(QtWidgets.QWidget):
 

@@ -6,11 +6,11 @@ import shutil
 import serial
 
 from pihud.PiHud import PiHud
-from PyQt5 import QtWidgets
+from PySide2 import QtWidgets
 from pihud import GlobalConfig
-
+from 
 #Touch
-from PyQt5.QtCore import Qt, QEvent
+from PySide2.QtCore import Qt, QEvent
 
 config_path         ='/etc/pihud/pihud.rc'
 

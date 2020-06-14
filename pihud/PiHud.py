@@ -3,11 +3,11 @@ import struct
 
 from pihud.Page import Page
 from pihud.Widget import Widget
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PySide2 import QtWidgets, QtCore, QtGui
 
 #Touch events
-from PyQt5.QtCore import QEvent
-from PyQt5.QtCore import Qt
+from PySide2.QtCore import QEvent
+from PySide2.QtCore import Qt
 
 class PiHud(QtWidgets.QMainWindow):
     def __init__(self, global_config, connection, uart_connection):

@@ -1,6 +1,6 @@
-from PyQt5.QtCore import QRect, Qt
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter,QFontDatabase,QPainterPath 
+from PySide2.QtCore import QRect, Qt
+from PySide2.QtWidgets import QWidget
+from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter,QFontDatabase,QPainterPath 
 from pihud.util import map_value, in_range, scale, map_scale, map_value, scale_offsets, str_scale
 import math
 

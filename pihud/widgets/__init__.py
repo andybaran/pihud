@@ -1,7 +1,7 @@
 import os
 import inspect
 import importlib
-from PyQt5 import QtWidgets
+from PySide2 import QtWidgets
 
 # the final dict for storing classes by classname
 

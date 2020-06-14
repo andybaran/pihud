@@ -1,7 +1,7 @@
 
-from PyQt5.QtCore import QRect, Qt, QSize
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QFont,QColor,QBrush,QPen,QPainter 
+from PySide2.QtCore import QRect, Qt, QSize
+from PySide2.QtWidgets import QWidget
+from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter 
 
 from pihud.util import map_value, in_range
 
