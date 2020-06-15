@@ -10,22 +10,7 @@ class AnalogBoost(QWidget):
 
         self.config = config
         print(config)
-        # config.update({'min' : -30, 
-        #     'max' : 20, 
-        #     'color' : '#2e3fcc', 
-        #     'redline_color' : '#ff0000', 
-        #     'scale_mult': 1, 
-        #     'scale_step': 5, 
-        #     'redline' : 14, 
-        #     'font_size' : 18, 
-        #     'title' : 'Analog Boost',
-        #     'x': 600,
-        #     'y': 240,
-        #     'w': 200,
-        #     'h': 200,
-        #     'numerals': 'true',
-        #     'sensor': 'Boost',
-        #     'note_font_size': 15})
+ 
         self.value = config["min"]
 
         self.font      = QFont()

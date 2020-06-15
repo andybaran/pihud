@@ -33,7 +33,6 @@ class Bar_Horizontal(QWidget):
 
     def render(self, response):
         # approach the value
-        if
         self.value += (response.value.magnitude - self.value) / 4
         self.update()
 
