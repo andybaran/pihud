@@ -37,7 +37,7 @@ def main():
 
     # =========================== Generic Serial Connection ==================
 
-    uart = serial.Serial("/dev/ttyAMA1", baudrate=115200)
+    # TODO: Create serial connection objects that can be passed to datapollers in pollerHub
     
     # ============================ QT Application =============================
     

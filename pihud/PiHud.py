@@ -47,7 +47,7 @@ class PiHud(QtWidgets.QMainWindow):
     def __count(self):
         return self.stack.count()
 
-    def __save(self):
+"""     def __save(self):
         pages = []
 
         for i in range(self.__count()):
@@ -57,7 +57,7 @@ class PiHud(QtWidgets.QMainWindow):
                 current_page.append(widget.config)
             pages.append(current_page)
 
-        self.global_config.save(pages)
+        self.global_config.save(pages) """
 
     # ========= Main loop =========
 
@@ -124,7 +124,7 @@ class PiHud(QtWidgets.QMainWindow):
         # add it to the page
         page.widgets.append(thiswidget)
 
-    def __add_widget(self, command):
+"""     def __add_widget(self, command):
         # make a default config for this command
         config = self.global_config.make_config(command)
 
@@ -134,19 +134,18 @@ class PiHud(QtWidgets.QMainWindow):
         # register the new command
         self.restart()
 
-        """ cycle through the screen stack """
-        self.goto_page(self.__index() + 1)
+        self.goto_page(self.__index() + 1) """
 
     # ========= Window Actions =========
 
-    def contextMenuEvent(self, e):
+"""     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
         if action is not None:
             command = action.data()#.toPyObject()
             # if this is a command creation action, make the new widget
             # there's got to be a better way to do this...
             if command is not None:
-                self.__add_widget(command)
+                self.__add_widget(command) """
 
 
     def keyPressEvent(self, e):

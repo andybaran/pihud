@@ -83,7 +83,7 @@ class GlobalConfig():
 
         self.data['pages'] = pages
 
-    def save(self, pages_configs):
+"""     def save(self, pages_configs):
         """ write the config back to the file """
     
         if os.path.isfile(self.filename):
@@ -103,7 +103,7 @@ class GlobalConfig():
             self.data["pages"] = pages
 
             with open(self.filename, 'w') as f:
-                f.write(json.dumps(self.data, indent=4))
+                f.write(json.dumps(self.data, indent=4)) """
 
     def __getitem__(self, key):
         if key in self.data:

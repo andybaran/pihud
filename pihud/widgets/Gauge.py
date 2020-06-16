@@ -148,6 +148,8 @@ class Gauge(QWidget):
         angle -= 90 + 45
         painter.rotate(angle)
 
+        painter.
+
 
         painter.drawEllipse(QPoint(0,0), 5, 5)
 
