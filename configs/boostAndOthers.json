@@ -1,6 +1,6 @@
 {
     "debug": false, 
-    "port": "/dev/ttyS0", 
+    "port": "/dev/pts/1", 
     "page_adv_pin": 18, 
     "color": "#2e3fcc", 
     "redline_color": "#ff0000", 
@@ -11,9 +11,9 @@
         [
             {
                 "sensor": "Boost",
-                "type": "AnalogBoost",
+                "type": "DigitalGauge",
                 "title": "Boost",
-                "datapoller": "boost",
+                "datapoller": "random",
                 "x": 400,
                 "y": 150,
                 "w": 250,

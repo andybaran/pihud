@@ -9,7 +9,6 @@ class AnalogBoost(QWidget):
         super(AnalogBoost, self).__init__(parent)
 
         self.config = config
-        print(config)
  
         self.value = config["min"]
 
@@ -38,8 +37,8 @@ class AnalogBoost(QWidget):
 
     def render(self, response):
         # approach the value
-        # self.value += (response.value.magnitude - self.value) / 8
-        self.value += (response - self.value) / 8
+        self.value += (response.value.magnitude - self.value) / 8
+        #self.value += (response - self.value) / 8
         self.update()
 
 
