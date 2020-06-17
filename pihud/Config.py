@@ -22,6 +22,7 @@ class Config():
             ("type",        _class_name ),
             ("title",       ""          ),
             ("datapoller",  ""          ),
+            ("indicator_color", ""      ),
             ("color",       "#2e3fcc"   ),
             ("x",           0           ),
             ("y",           0           ),

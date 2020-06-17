@@ -16,14 +16,21 @@ class Gauge(QWidget):
         self.note_font = QFont()
         self.color     = QColor(config["color"])
         self.red_color = QColor(config["redline_color"])
+        self.indicator_color = QColor(config["indicator_color"])
+
         self.brush     = QBrush(self.color)
+        self.indicator_brush = QBrush(self.indicator_color)
+
         self.pen       = QPen(self.color)
         self.red_pen   = QPen(self.red_color)
+        self.indicator_pen = QPen(self.indicator_color)
 
         self.font.setPixelSize(self.config["font_size"])
         self.note_font.setPixelSize(self.config["note_font_size"])
+
         self.pen.setWidth(3)
         self.red_pen.setWidth(3)
+        self.indicator_pen.setWidth(3)
 
         s = scale(config["min"], config["max"], config["scale_step"])
 
@@ -77,7 +84,6 @@ class Gauge(QWidget):
 
         painter.translate(self.width() / 2, self.height() / 2)
 
-
         # draw the ticks
 
         end = self.__tick_r - self.__tick_l
@@ -91,7 +97,6 @@ class Gauge(QWidget):
 
             painter.drawLine(self.__tick_r, 0, end, 0)
             painter.restore()
-
 
         # draw the arc
 
@@ -109,7 +114,6 @@ class Gauge(QWidget):
         s += l
         l = -(270 - self.red_angle) * 16
         painter.drawArc(r, s, l)
-
 
         painter.restore()
 
@@ -141,15 +145,15 @@ class Gauge(QWidget):
 
     def draw_needle(self, painter):
         painter.save()
+        
+        painter.setBrush(self.indicator_brush)
+        painter.setPen(self.indicator_pen)
 
         painter.translate(self.width() / 2, self.height() / 2)
         angle = map_value(self.value, self.config["min"], self.config["max"], 0, 270)
         angle = min(angle, 270)
         angle -= 90 + 45
         painter.rotate(angle)
-
-        painter.
-
 
         painter.drawEllipse(QPoint(0,0), 5, 5)
 

@@ -11,7 +11,7 @@ import pint
 
 ureg = pint.UnitRegistry()
 
-uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
+#uart = serial.Serial("/dev/ttyUSB_MEGA1", baudrate=115200)
 
 class sensorvalue:
     def __init__(self):

@@ -83,27 +83,27 @@ class GlobalConfig():
 
         self.data['pages'] = pages
 
-"""     def save(self, pages_configs):
-        """ write the config back to the file """
+#     def save(self, pages_configs):
+#         """ write the config back to the file """
     
-        if os.path.isfile(self.filename):
+#         if os.path.isfile(self.filename):
 
-            pages = []
+#             pages = []
 
-            for page in pages_configs:
+#             for page in pages_configs:
 
-                current_page = []
+#                 current_page = []
 
-                for config in page:
-                    # for JSON output, reference the OrderedDict inside the Config
-                    current_page.append(config.data)
+#                 for config in page:
+#                     # for JSON output, reference the OrderedDict inside the Config
+#                     current_page.append(config.data)
 
-                pages.append(current_page)
+#                 pages.append(current_page)
 
-            self.data["pages"] = pages
+#             self.data["pages"] = pages
 
-            with open(self.filename, 'w') as f:
-                f.write(json.dumps(self.data, indent=4)) """
+#             with open(self.filename, 'w') as f:
+#                 f.write(json.dumps(self.data, indent=4))
 
     def __getitem__(self, key):
         if key in self.data:

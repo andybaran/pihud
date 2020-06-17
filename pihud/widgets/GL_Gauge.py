@@ -1,29 +1,36 @@
-from PySide2.QtCore import QRect, Qt, QPoint
-from PySide2.QtWidgets import QWidget
+from PySide2.QtCore import QRect, Qt, QPoint, QSize
+from PySide2.QtWidgets import QOpenGLWidget
 from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPolygon
 
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
 
-class AnalogBoost(QWidget):
+class GL_Gauge(QOpenGLWidget):
     def __init__(self, parent, config):
-        super(AnalogBoost, self).__init__(parent)
+        super(GL_Gauge, self).__init__(parent)
 
         self.config = config
- 
+
         self.value = config["min"]
 
         self.font      = QFont()
         self.note_font = QFont()
         self.color     = QColor(config["color"])
         self.red_color = QColor(config["redline_color"])
+        self.indicator_color = QColor(config["indicator_color"])
+
         self.brush     = QBrush(self.color)
+        self.indicator_brush = QBrush(self.indicator_color)
+
         self.pen       = QPen(self.color)
         self.red_pen   = QPen(self.red_color)
+        self.indicator_pen = QPen(self.indicator_color)
 
         self.font.setPixelSize(self.config["font_size"])
         self.note_font.setPixelSize(self.config["note_font_size"])
+
         self.pen.setWidth(3)
         self.red_pen.setWidth(3)
+        self.indicator_pen.setWidth(3)
 
         s = scale(config["min"], config["max"], config["scale_step"])
 
@@ -34,11 +41,15 @@ class AnalogBoost(QWidget):
         if config["redline"] is not None:
             self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
 
+        #self.setFormat('OpenGLES')
+
+        self.initializeGL()
+        self.resizeGL(config['w'],config['h'])
+
 
     def render(self, response):
         # approach the value
         self.value += (response.value.magnitude - self.value) / 8
-        #self.value += (response - self.value) / 8
         self.update()
 
 
@@ -46,8 +57,8 @@ class AnalogBoost(QWidget):
         return QSize(350, 300)
 
 
-    def paintEvent(self, e):
-
+    def paintGL(self):
+       
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
@@ -69,15 +80,12 @@ class AnalogBoost(QWidget):
         self.draw_marks(painter)
         self.draw_needle(painter)
 
-        painter.end()
-
 
     def draw_marks(self, painter):
 
         painter.save()
 
         painter.translate(self.width() / 2, self.height() / 2)
-
 
         # draw the ticks
 
@@ -92,7 +100,6 @@ class AnalogBoost(QWidget):
 
             painter.drawLine(self.__tick_r, 0, end, 0)
             painter.restore()
-
 
         # draw the arc
 
@@ -110,7 +117,6 @@ class AnalogBoost(QWidget):
         s += l
         l = -(270 - self.red_angle) * 16
         painter.drawArc(r, s, l)
-
 
         painter.restore()
 
@@ -142,13 +148,15 @@ class AnalogBoost(QWidget):
 
     def draw_needle(self, painter):
         painter.save()
+        
+        painter.setBrush(self.indicator_brush)
+        painter.setPen(self.indicator_pen)
 
         painter.translate(self.width() / 2, self.height() / 2)
         angle = map_value(self.value, self.config["min"], self.config["max"], 0, 270)
         angle = min(angle, 270)
         angle -= 90 + 45
         painter.rotate(angle)
-
 
         painter.drawEllipse(QPoint(0,0), 5, 5)
 
