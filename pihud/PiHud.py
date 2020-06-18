@@ -9,7 +9,7 @@ from PySide2.QtCore import QEvent
 from PySide2.QtCore import Qt
 
 class PiHud(QtWidgets.QMainWindow):
-    def __init__(self, global_config, connection, uart_connection):
+    def __init__(self, global_config, connection):
         super(PiHud, self).__init__()
 
         self.global_config = global_config
@@ -47,17 +47,17 @@ class PiHud(QtWidgets.QMainWindow):
     def __count(self):
         return self.stack.count()
 
-    def __save(self):
-        pages = []
+    # def __save(self):
+    #     pages = []
 
-        for i in range(self.__count()):
-            page = self.stack.widget(i)
-            current_page = []
-            for widget in page.widgets:
-                current_page.append(widget.config)
-            pages.append(current_page)
+    #     for i in range(self.__count()):
+    #         page = self.stack.widget(i)
+    #         current_page = []
+    #         for widget in page.widgets:
+    #             current_page.append(widget.config)
+    #         pages.append(current_page)
 
-        self.global_config.save(pages)
+    #     self.global_config.save(pages)
 
     # ========= Main loop =========
 
@@ -124,31 +124,6 @@ class PiHud(QtWidgets.QMainWindow):
         # add it to the page
         page.widgets.append(thiswidget)
 
-    def __add_widget(self, command):
-        # make a default config for this command
-        config = self.global_config.make_config(command)
-
-        # construct a new widget on this page
-        self.__add_existing_widget(self.__page(), config)
-
-        # register the new command
-        self.restart()
-
-        """ cycle through the screen stack """
-        self.goto_page(self.__index() + 1)
-
-    # ========= Window Actions =========
-
-    def contextMenuEvent(self, e):
-        action = self.menu.exec_(self.mapToGlobal(e.pos()))
-        if action is not None:
-            command = action.data()#.toPyObject()
-            # if this is a command creation action, make the new widget
-            # there's got to be a better way to do this...
-            if command is not None:
-                self.__add_widget(command)
-
-
     def keyPressEvent(self, e):
         key = e.key()
 
@@ -162,8 +137,6 @@ class PiHud(QtWidgets.QMainWindow):
     # Handle touch events
     def eventFilter(self, obj, event):
         if event.type() == QEvent.TouchBegin:
-            for item in event.touchPoints():
-                print(item)
             self.next_page()
             return True
         elif event.type() == QEvent.TouchEnd:

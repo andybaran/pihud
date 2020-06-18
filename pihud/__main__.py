@@ -37,12 +37,12 @@ def main():
 
     # =========================== Generic Serial Connection ==================
 
-    uart = serial.Serial("/dev/ttyAMA1", baudrate=115200)
+    # TODO: Create serial connection objects that can be passed to datapollers in pollerHub
     
     # ============================ QT Application =============================
     
     app = QtWidgets.QApplication(sys.argv)
-    hud = PiHud(global_config, connection, uart)
+    hud = PiHud(global_config, connection)
 
     # TODO: Hide the cursor for the application that "contains" the hud
 

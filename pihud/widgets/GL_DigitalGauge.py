@@ -1,12 +1,12 @@
 from PySide2.QtCore import QRect, Qt, QSize
-from PySide2.QtWidgets import QWidget
+from PySide2.QtWidgets import QOpenGLWidget
 from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter,QFontDatabase,QPainterPath 
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
 import math
 
-class DigitalGauge(QWidget):
+class GL_DigitalGauge(QOpenGLWidget):
     def __init__(self, parent, config):
-        super(DigitalGauge, self).__init__(parent)
+        super(GL_DigitalGauge, self).__init__(parent)
 
         self.config = config
         self.value = config["min"]
@@ -60,7 +60,7 @@ class DigitalGauge(QWidget):
         return QSize(350, 300)
 
 
-    def paintEvent(self, e):
+    def paintGL(self):
 
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text

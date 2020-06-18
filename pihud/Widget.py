@@ -96,6 +96,6 @@ class Widget(QtWidgets.QWidget):
             self.graphics.render(response)
             return     
 
-        # TODO - There has to be a better way to handle this is_null doesn't work with pint ints
+        # TODO - There has to be a better way to handle this is_null doesn't work with pint, ints (see above), etc.
         #if not response.is_null():
         self.graphics.render(response)
