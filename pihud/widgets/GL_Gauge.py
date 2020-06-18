@@ -41,11 +41,13 @@ class GL_Gauge(QOpenGLWidget):
         if config["redline"] is not None:
             self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
 
-        #self.setFormat('OpenGLES')
+       
+        
 
         self.initializeGL()
         self.resizeGL(config['w'],config['h'])
-
+        #self.setUpdateBehavior()
+        #self.setFormat('OpenGLES')
 
     def render(self, response):
         # approach the value
@@ -58,7 +60,7 @@ class GL_Gauge(QOpenGLWidget):
 
 
     def paintGL(self):
-       
+        
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
@@ -72,6 +74,7 @@ class GL_Gauge(QOpenGLWidget):
         painter.setPen(self.pen)
         painter.setBrush(self.brush)
         painter.setRenderHint(QPainter.Antialiasing)
+        painter.setRenderHint(QPainter.TextAntialiasing)
 
         self.draw_title(painter)
         if self.config["numerals"]:

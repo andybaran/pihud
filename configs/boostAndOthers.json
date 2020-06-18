@@ -1,6 +1,6 @@
 {
     "debug": false, 
-    "port": "/dev/pts/2", 
+    "port": "/dev/pts/3", 
     "page_adv_pin": 18, 
     "color": "#2e3fcc", 
     "redline_color": "#ff0000",
@@ -11,7 +11,7 @@
         [
             {
                 "sensor": "Boost",
-                "type": "Gauge",
+                "type": "GL_Gauge",
                 "title": "Boost",
                 "datapoller": "random",
                 "indicator_color": "#ff0000",
