@@ -10,6 +10,7 @@ echo "Doing pips for modules without packages"
 pip3 install obd pyserial pyserial-asyncio
 
 echo "Setup systemd"
+cp ./configs/pages.json /etc/pihud/pihud.json
 cp ./configs/systemd/pihud.service /lib/systemd/system/pihud.service
 systemctl daemon-reload
 systemctl enable pihud.service
