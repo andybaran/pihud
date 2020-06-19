@@ -26,3 +26,5 @@ PiHud is configured by modifying a file named `pihud.json` in /etc/pihud/pihud.j
 -   The `demo` key is used to feed a sin() curve into all widgets for testing.
 -   The `debug` key is used to turn python-OBD's debug printing on and off. If enabled, you will see OBD debug information being printed to `stderr`.
 -   The `datapoller` field corresponds to a function in [pollerHub.py](https://github.com/andybaran/pihud/blob/master/pihud/pollerHub.py) and allows for displaying data from sources other than OBD.  
+- USB devices polled via custom `datapoller` customs can be set to static mappings on the pi via udev rules as shown [here](https://www.freva.com/2019/06/20/assign-fixed-usb-port-names-to-your-raspberry-pi/).  An example that maps my Arduino to /dev/ttyUSB_MEGA can be found [here](https://github.com/andybaran/pihud/blob/master/configs/10-usb-serial.rules).
+- My [config.txt](https://github.com/andybaran/pihud/blob/master/configs/pi4/config.txt) simply enables one of the extra UART ports on the rpi 4
