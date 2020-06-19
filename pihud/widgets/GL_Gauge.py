@@ -5,6 +5,8 @@ from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPolygon
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
 
 class GL_Gauge(QOpenGLWidget):
+        
+
     def __init__(self, parent, config):
         super(GL_Gauge, self).__init__(parent)
 
@@ -40,32 +42,28 @@ class GL_Gauge(QOpenGLWidget):
         self.red_angle = 270
         if config["redline"] is not None:
             self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
-
-       
         
-
-        self.initializeGL()
+        #self.initializeGL()
         self.resizeGL(config['w'],config['h'])
-        #self.setUpdateBehavior()
-        #self.setFormat('OpenGLES')
+        #self.PartialUpdate     #self.setFormat('OpenGLES')
+
+
 
     def render(self, response):
         # approach the value
         self.value += (response.value.magnitude - self.value) / 8
         self.update()
 
-
     def sizeHint(self):
         return QSize(350, 300)
 
-
     def paintGL(self):
-        
+    
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
         self.__tick_l   = (r/10)       # length of each tick, extending inwards
-        self.__needle_l = (r/5) * 3    # length of the needle
+        self.__needle_l = (r/5) * 3.5    # length of the needle
 
         painter = QPainter()
         painter.begin(self)
@@ -82,7 +80,7 @@ class GL_Gauge(QOpenGLWidget):
             self.draw_numbers(painter)
         self.draw_marks(painter)
         self.draw_needle(painter)
-
+        painter.end()
 
     def draw_marks(self, painter):
 
@@ -123,7 +121,6 @@ class GL_Gauge(QOpenGLWidget):
 
         painter.restore()
 
-
     def draw_numbers(self, painter):
 
         for a, v in zip(self.angles, self.str_scale):
@@ -148,21 +145,18 @@ class GL_Gauge(QOpenGLWidget):
 
             painter.restore()
 
-
     def draw_needle(self, painter):
-        painter.save()
-        
+
         painter.setBrush(self.indicator_brush)
         painter.setPen(self.indicator_pen)
-
+        
+        painter.save()
         painter.translate(self.width() / 2, self.height() / 2)
         angle = map_value(self.value, self.config["min"], self.config["max"], 0, 270)
         angle = min(angle, 270)
         angle -= 90 + 45
         painter.rotate(angle)
-
         painter.drawEllipse(QPoint(0,0), 5, 5)
-
         painter.drawPolygon(
             QPolygon([
                 QPoint(-5, 0),
@@ -171,9 +165,7 @@ class GL_Gauge(QOpenGLWidget):
                 QPoint(-5, 0)
             ])
         )
-
         painter.restore()
-
 
     def draw_title(self, painter):
         painter.save()

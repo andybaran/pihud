@@ -6,7 +6,7 @@ import shutil
 import serial
 
 from pihud.PiHud import PiHud
-from PySide2 import QtWidgets
+from PySide2.QtWidgets import QOpenGLWidget, QApplication
 from pihud import GlobalConfig
 
 #Touch
@@ -41,7 +41,7 @@ def main():
     
     # ============================ QT Application =============================
     
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     hud = PiHud(global_config, connection)
 
     # TODO: Hide the cursor for the application that "contains" the hud

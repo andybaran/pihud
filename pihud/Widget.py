@@ -4,22 +4,11 @@ from pihud.pollerHub import pollerHub, sensorvalue
 from pihud.widgets import displaywidgets
 from PySide2 import QtCore, QtWidgets
 
-class Widget(QtWidgets.QWidget):
+class Widget(QtWidgets.QOpenGLWidget):
 
     def __init__(self, parent, config):
         super(Widget, self).__init__(parent)
         self.config = config
-
-        '''TODO : make this work with QML multitouch two finger touch'''
-        self.menu = QtWidgets.QMenu()
-        self.menu.addAction(self.config["sensor"]).setDisabled(True)
-
-        subMenu = self.menu.addMenu("Widget Type")
-        for w in displaywidgets:
-            a = subMenu.addAction(w)
-            a.setData(displaywidgets[w])
-
-        self.menu.addAction("Delete Widget", self.delete)
     
         # instantiate the requested graphics object
         self.graphics = displaywidgets[config["type"]](self, config)
@@ -74,10 +63,8 @@ class Widget(QtWidgets.QWidget):
 
             drag.exec_(QtCore.Qt.MoveAction)
 
-
     def contextMenuEvent(self, e):
         action = self.menu.exec_(self.mapToGlobal(e.pos()))
-    
     
     def get_command(self):
         if self.config['datapoller'] == 'obd':

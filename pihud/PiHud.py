@@ -47,18 +47,6 @@ class PiHud(QtWidgets.QMainWindow):
     def __count(self):
         return self.stack.count()
 
-    # def __save(self):
-    #     pages = []
-
-    #     for i in range(self.__count()):
-    #         page = self.stack.widget(i)
-    #         current_page = []
-    #         for widget in page.widgets:
-    #             current_page.append(widget.config)
-    #         pages.append(current_page)
-
-    #     self.global_config.save(pages)
-
     # ========= Main loop =========
 
     def timerEvent(self, event):
