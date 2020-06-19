@@ -26,25 +26,6 @@
                 "scale_mult": 1000,
                 "buffer_size": 60
             }
-        ],
-        [
-            {
-                "sensor": "Radom_RPM",
-                "type": "Gauge",
-                "title": "Random_RPM",
-                "datapoller": "random",
-                "x": 300,
-                "y": 5,
-                "w": 200,
-                "h": 200,
-                "min": 0,
-                "max": 8000,
-                "redline": 6000,
-                "numerals": true,
-                "scale_step": 1000,
-                "scale_mult": 1000,
-                "buffer_size": 60
-            }
         ]
     ]
 }

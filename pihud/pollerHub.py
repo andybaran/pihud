@@ -1,8 +1,3 @@
-# Taken from : https://stackoverflow.com/questions/53445074/using-decorator-arguments-for-switching
-
-#if datatype (from json config) == "custom" call this, otherwise just do the default obd
-
-# setup a place in __main or pihud to have connections already open and waiting to avoid latency
 
 import serial
 import struct
@@ -38,19 +33,6 @@ class pollerHub:
         return cls._func_map.get(commandType, cls._func_map[cls.DEFAULT])()
 
 @pollerHub('boost')
-def _boost():
-    r = uart.read_until(size=4)
-    if len(r) == 1:
-        r = 0 # assume that we're getting passed a null value b/c ambient = boost pressure (common in testing while not hooked up to vehicle)
-    else:
-        r = struct.unpack('<i',r)
-        r = r[0]
-        if r > 70:  #in order to avoid 2's complement math gauge code add's 100 to any negative value; -30 is the lowest that can go.
-            r = r - 100
-    readvalue.value = r * ureg.psi
-    return r
-
-@pollerHub('boost-test')
 def _boost():
     r = uart.read_until(size=4)
     if len(r) == 1:

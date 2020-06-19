@@ -1,0 +1,1 @@
+SUBSYSTEM=="tty", ATTRS{idProduct}=="0042", ATTRS{idVendor}=="2341", SYMLINK+="ttyUSB_MEGA1"
