@@ -1,88 +1,28 @@
-PiHud
-=====
 
-Configurable heads up display fit for the Raspberry Pi
+This is a fork of a fork of the original [PiHud](https://github.com/brendan-w/pihud). I forked from [this branch](https://github.com/star0x4b/pihud) because it had been recently updated when I started and I like the look of the additional digital gauge types.
 
-*Warning: This project is mostly for experimenting with the underlying [OBD library](https://github.com/brendan-w/python-OBD).*
+Some key differences from the original PiHud:
+
+1. Updated to Python 3.7.3 (probably works with later versions too)
+2. Moved from PyQT to PySide2
+3. Page switching is done by touching the screen or TAB key; *I've tested with the official RPI Display*
+4. Custom data sources are available using the pollerHub class; *An [arduino boost gauge](https://github.com/andybaran/mega-boostgauge) for example*
+5. Removed ability to add widgets while running; driving is distracting enough.
+ 
 
 Turning your Pi into a PiHud
 ----------------------------
 
-For installation instructions on different platforms, see the [GitHub wiki](https://github.com/brendan-w/piHud/wiki)
-
-First, it is recommended that you start with a clean install of [Raspbian](http://www.raspberrypi.org/downloads/). On first boot, it will prompt you with a setup screen. After you have expanded the filesystem and set your password, enter the listing named `Enable Boot to Desktop/Scratch`. In this option, make sure to select the console only option, in order to prevent the Pi from starting its desktop environment on boot `Console Text console, requiring login`. You can now click finish, and boot your Pi.
-
-After loging in, you will be presented with a terminal. Please install the following dependencies, and clone the repo
-
-```shell
-sudo apt-get install python-qt4
-sudo apt-get install python-pip
-git clone https://github.com/brendan-w/piHud.git pihud
-cd pihud/
-sudo python setup.py install
-```
-
-In order to run PiHud on boot, you will need to tweak a few config files (note: most of the following was taken from [this post](http://www.raspberrypi.org/forums/viewtopic.php?p=344408)). Open the file /etc/rc.local in a text editor of your choice. Add the following line just before the exit 0
-
-```shell
-su -s /bin/bash -c startx pi &
-```
-
-Now, in order to allow X sessions for all users, run the following command, and choose Anybody from the list of options
-
-```shell
-sudo dpkg-reconfigure x11-common
-```
-Obsoleted. Use this instead:
-```
-sudo apt-get install xserver-xorg-legacy -y
-
-sudo vim /etc/X11/Xwrapper.config
-#Change console to anybody
-allowed_users=anybody
-
-sudo vim /etc/X11/xinit/xinitrc
-#your file will look something like this
-
-#!/bin/sh
-
-# /etc/X11/xinit/xinitrc
-#
-# global xinitrc file, used by all X sessions started by xinit (startx)
-
-# invoke global X session script
-~pi/.xinitrc
-#. /etc/X11/Xsession
-```
-
-Finally, create an .xinitrc file (if you don’t have one already), in your home directory
-
-```shell
-touch ~/.xinitrc
-```
-
-Open it in a text editor of your choice, and add the following line:
-
-```shell
-python -m pihud
-```
-
-Your done! You can now reboot the Pi with:
-
-```python
-sudo shutdown -r 0
-```
+For installation on Raspbian git clone and run pihud-installer.sh.  This simple script will install python3, as many python packages as possible via apt, remaining packages via pip and setup PiHud to run on boot using systemd.
 
 Configuring
 -----------
 
-PiHud is configured by modifying a file named `pihud.rc` in your home directory. This file will be created the first time piHud runs. However, a few settings are accessable through the piHud app itself. To move widgets, simply click and drag them around the screen. Right clicking on widgets will tell you which sensor they are tied to, and allow you to delete them. Right clicking on the black background (not on a widget), will let you add widgets or pages to your HUD. By default, page switching can be done with the `TAB` key.
-
-All other settings are available in the pihud.rc file, which is structured in `json`. A few items of note in this file:
+PiHud is configured by modifying a file named `pihud.json` in /etc/pihud/pihud.json
 
 -   The `sensor` field is the string name for any sensor your car supports. A full list can be found in the [python-OBD wiki](http://python-obd.readthedocs.io/en/latest/Command%20Tables/)
--   The `type` field selects the way data is displayed. Values can be: `Gauge`, `Bar`, or `Text`.
+-   The `type` field selects the way data is displayed. Values correspond with any class in the [widgets folder](https://github.com/andybaran/pihud/tree/master/pihud/widgets).
 -   All color attributes accept CSS color values
--   The `page_adv_pin` setting is used to tie the page cycling to any of the Pi’s GPIO pins. Simply wire a button that grounds the set pin while pressed.
 -   The `demo` key is used to feed a sin() curve into all widgets for testing.
 -   The `debug` key is used to turn python-OBD's debug printing on and off. If enabled, you will see OBD debug information being printed to `stderr`.
+-   The `datapoller` field corresponds to a function in [pollerHub.py](https://github.com/andybaran/pihud/blob/master/pihud/pollerHub.py) and allows for displaying data from sources other than OBD.  
