@@ -58,7 +58,7 @@ class Gauge(QWidget):
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
         self.__tick_l   = (r/10)       # length of each tick, extending inwards
-        self.__needle_l = (r/5) * 3    # length of the needle
+        self.__needle_l = (r/5) * 3.5    # length of the needle
 
         painter = QPainter()
         painter.begin(self)

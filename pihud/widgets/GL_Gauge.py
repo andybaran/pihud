@@ -1,17 +1,22 @@
+# Some docs https://doc.qt.io/qtforpython/PySide2/QtWidgets/QOpenGLWidget.html
+
 from PySide2.QtCore import QRect, Qt, QPoint, QSize
 from PySide2.QtWidgets import QOpenGLWidget
 from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPolygon
+
+from PyOpenGL.GL import *
 
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
 
 class GL_Gauge(QOpenGLWidget):
     
     def initializeGL(self):
-        self.initializeOpenGLFunctions()
+        self.glClearColor(0,0,0,0)
+        self.glEnable(GL_DEPTH_TEST) #https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glEnable.xhtml
         return True
-    
-    def resizeGL(self):
-        return True
+
+    def resizeGL(self,w,h):
+        self.glViewport(0,0,w,h)
 
     def __init__(self, parent, config):
         super(GL_Gauge, self).__init__(parent)
@@ -53,8 +58,6 @@ class GL_Gauge(QOpenGLWidget):
         self.resizeGL(config['w'],config['h'])
         #self.PartialUpdate     #self.setFormat('OpenGLES')
 
-
-
     def render(self, response):
         # approach the value
         self.value += (response.value.magnitude - self.value) / 8
@@ -64,7 +67,7 @@ class GL_Gauge(QOpenGLWidget):
         return QSize(350, 300)
 
     def paintGL(self):
-        self.glClear()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks
