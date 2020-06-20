@@ -4,8 +4,6 @@ from PySide2.QtCore import QRect, Qt, QPoint, QSize
 from PySide2.QtWidgets import QOpenGLWidget
 from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPolygon
 
-from PyOpenGL.GL import *
-
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
 
 class GL_Gauge(QOpenGLWidget):
