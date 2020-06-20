@@ -5,7 +5,13 @@ from PySide2.QtGui import QFont,QColor,QBrush,QPen,QPainter,QPolygon
 from pihud.util import scale, map_scale, map_value, scale_offsets, str_scale
 
 class GL_Gauge(QOpenGLWidget):
-        
+    
+    def initializeGL(self):
+        self.initializeOpenGLFunctions()
+        return True
+    
+    def resizeGL(self):
+        return True
 
     def __init__(self, parent, config):
         super(GL_Gauge, self).__init__(parent)
@@ -43,7 +49,7 @@ class GL_Gauge(QOpenGLWidget):
         if config["redline"] is not None:
             self.red_angle  = map_value(config["redline"], config["min"], config["max"], 0, 270)
         
-        #self.initializeGL()
+        self.initializeGL()
         self.resizeGL(config['w'],config['h'])
         #self.PartialUpdate     #self.setFormat('OpenGLES')
 
@@ -58,7 +64,7 @@ class GL_Gauge(QOpenGLWidget):
         return QSize(350, 300)
 
     def paintGL(self):
-    
+        self.glClear()
         r = min(self.width(), self.height()) / 2
         self.__text_r   = r - (r/10)   # radius of the text
         self.__tick_r   = r - (r/4)    # outer radius of the tick marks

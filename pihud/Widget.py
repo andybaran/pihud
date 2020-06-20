@@ -6,6 +6,7 @@ from PySide2 import QtCore, QtWidgets
 
 class Widget(QtWidgets.QOpenGLWidget):
 
+    
     def __init__(self, parent, config):
         super(Widget, self).__init__(parent)
         self.config = config

@@ -11,7 +11,7 @@
         [
             {
                 "sensor": "Boost",
-                "type": "Gauge",
+                "type": "GL_Gauge",
                 "title": "Boost",
                 "datapoller": "random",
                 "indicator_color": "#ff0000",
